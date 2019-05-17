@@ -1,9 +1,9 @@
-const express = require('express') 
+const { ApolloServer } = require('apollo-server') 
 
-const app = express() 
+const typeDefs = require('./schema') 
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
+const server = new ApolloServer({ typeDefs })
+
+server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`)
 })
-
-app.listen('5000', () => console.log('server running on port 5000'))
