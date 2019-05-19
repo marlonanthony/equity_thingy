@@ -1,26 +1,32 @@
 * { box-sizing: border-box; }
 h1 { text-align: center; color: var(--secondary-color);}
-
-.App {
-  padding: 10px 10px 0px 10px;
-  width: 30%;
-  margin: 0 auto;
-  margin-top: 50px;
-  border: 1px solid rgb(200,200,200);
-  border-radius: 3px;
-  /* background: var(--main-color); */
+button {
+  padding: 0 10px;
+  cursor: pointer;
 }
 
-.App form {
+.App {}
+
+.exchange_details {
+  padding: 10px 10px 0px 10px;
+  width: 30%;
+  min-width: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+  border: 1px solid var(--text-color);
+  border-radius: 3px;
+}
+
+.exchange_details form {
   display: flex;
   justify-content: space-around;
 }
 
-.App form input {
+.exchange_details form input {
   padding: 2px;
   text-transform: uppercase;
 }
-.App form input::placeholder {
+.exchange_details form input::placeholder {
   color: black;
   text-transform: uppercase;
 }
@@ -28,7 +34,7 @@ h1 { text-align: center; color: var(--secondary-color);}
 .data {
   display: flex;
   border-bottom: 1px solid var(--secondary-color);
-  color: rgb(200,200,200);
+  color: var(--text-color);
 }
 
 .data p {
@@ -38,3 +44,13 @@ h1 { text-align: center; color: var(--secondary-color);}
 .data .key {
   color: var(--secondary-color);
 }
+
+.buy_sell {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid var(--text-color);
+}
+.buy_sell p {
+  color: var(--secondary-color);
+}
+.buy_sell p span { color: var(--text-color);}

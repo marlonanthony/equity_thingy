@@ -2,6 +2,7 @@
 * {
   --main-color: rgb(15,15,23);
   --secondary-color: rgb(55,131,194);
+  --text-color: rgb(200,200,200);
 }
 
 body {

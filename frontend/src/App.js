@@ -1,26 +1,25 @@
 import React, { Component, useState, useEffect, useCallback } from 'react'
 import keys from './keys_dev'
-import './App.css';
+import './App.css'
+
+// goofy ass API with spaces in its keys work around
+const fromCurrencyCode = '1. From_Currency Code',
+      fromCurrencyName = '2. From_Currency Name',
+      toCurrencyCode = '3. To_Currency Code',
+      toCurrencyName = '4. To_Currency Name', 
+      exchangeRate = '5. Exchange Rate',
+      lastRefreshed = '6. Last Refreshed',
+      timeZone = '7. Time Zone',
+      bidPrice = '8. Bid Price',
+      askPrice = '9. Ask Price'
 
 const App = () => {
+  const [currency, setCurrency] = useState('EUR') 
   const [toCurrency, setToCurrency] = useState('USD') 
   const [equity, setEquity] = useState({}) 
   const [isLoading, setIsLoading] = useState(false) 
-
-  // BANK
-  const [currency, setCurrency] = useState('EUR') 
   const [bankRoll, setBankRoll] = useState(100000)
-
-  const fromCurrencyCode = '1. From_Currency Code',
-        fromCurrencyName = '2. From_Currency Name',
-        toCurrencyCode = '3. To_Currency Code',
-        toCurrencyName = '4. To_Currency Name', 
-        exchangeRate = '5. Exchange Rate',
-        lastRefreshed = '6. Last Refreshed',
-        timeZone = '7. Time Zone',
-        bidPrice = '8. Bid Price',
-        askPrice = '9. Ask Price'
-  console.log(equity)
+  let profitLoss = 0
 
   async function fetchData () {
     try {
@@ -36,133 +35,72 @@ const App = () => {
 
   useEffect(() => {
     fetchData() 
-  }, [])
+  }, [profitLoss, currency])
 
   return (
-    <div className="App">
-      <h1>Currency Exchange</h1>
-      <form onSubmit={(e) => {
-        fetchData() 
-        e.preventDefault() 
-      }}> 
-        <input 
-          placeholder={currency} 
-          name='currency' 
-          value={currency} 
-          readOnly
-        />
-        <input 
-          placeholder='To' 
-          onChange={e => setToCurrency(e.target.value)}
-          name='toCurrency' 
-          value={toCurrency} 
-        />
-        <button type='submit'>Submit</button>
-      </form>
-      { isLoading ? <h1>LOADING</h1> : (
-        equity && Object.keys(equity).map(val => (
-          val.includes('Last Refreshed') 
-          ? (
-              <div key={val[0]} className='data'>
-                <p className='key'>{`${val.slice(2)}:`}</p> 
-                <p>{`${new Date(equity[val]).toLocaleString()}`}</p>
-              </div>
-            ) 
-          : (
-              <div key={val[0]} className='data'>
-                <p className='key'>{`${val.slice(2).replace(/_/g, ' ')}:`}</p> 
-                <p>{`${equity[val]}`}</p>
-              </div>
-            )
-        )) 
-      )}
-      <h1>BankRoll {bankRoll +' '+ currency}</h1>
-      <button onClick={(e) => {
-        const newBankRoll = (bankRoll * equity[askPrice]).toFixed(4)
-        setBankRoll(newBankRoll)
-        setCurrency(toCurrency.toUpperCase()) 
-        setToCurrency('') 
-      }}>Buy at ask price</button>
-    </div>
+    // <main className='container'>
+      <div className="App">
+        <section >
+          <h1>Bank Roll {bankRoll +' '+ currency}</h1>
+          <div className='buy_sell'>
+            <button onClick={(e) => {
+              const newBankRoll = (bankRoll * equity[exchangeRate]).toFixed(4) 
+              setBankRoll(newBankRoll)
+              localStorage.setItem('exchangeRate', equity[exchangeRate])
+              setCurrency(currency === 'USD' ? 'EUR' : 'USD') 
+              setToCurrency(toCurrency === 'USD' ? 'EUR' : 'USD') 
+            }}>Buy</button>
+            <p>Profit/Loss: <span>{profitLoss +' '+ currency}</span></p>
+            <button onClick={() => {
+              const storedExchangeRate = JSON.parse(localStorage.getItem('exchangeRate'))
+              profitLoss = equity[exchangeRate] - storedExchangeRate
+              setCurrency(currency === 'USD' ? 'EUR' : 'USD') 
+              setToCurrency(toCurrency === 'USD' ? 'EUR' : 'USD') 
+            }}> Sell </button>
+          </div>
+        </section>
+        <section className='exchange_details'>
+          <h1>Currency Exchange</h1>
+          <form onSubmit={(e) => {
+            fetchData() 
+            e.preventDefault() 
+          }}> 
+            <input 
+              placeholder={currency} 
+              name='currency' 
+              value={currency} 
+              readOnly
+            />
+            <input 
+              placeholder='To' 
+              onChange={e => setToCurrency(e.target.value)}
+              name='toCurrency' 
+              value={toCurrency} 
+            />
+            <button type='submit'>Update</button>
+          </form>
+          { isLoading ? <h1>LOADING</h1> : (
+            equity && Object.keys(equity).map(val => (
+              val.includes('Last Refreshed') 
+              ? (
+                  <div key={val[0]} className='data'>
+                    <p className='key'>{`${val.slice(2)}:`}</p> 
+                    <p>{`${new Date(equity[val]).toLocaleString()}`}</p>
+                  </div>
+                ) 
+              : (
+                  <div key={val[0]} className='data'>
+                    <p className='key'>{`${val.slice(2).replace(/_/g, ' ')}:`}</p> 
+                    <p>{`${equity[val]}`}</p>
+                  </div>
+                )
+            )) 
+          )}
+        </section>
+
+      </div>
+    // </main>
   )
 }
-
-// class App extends Component {
-//   state = { 
-//     equity: {}, 
-//     fromCurrency: 'USD', 
-//     toCurrency: 'JPY' 
-//   }
-
-//   componentDidMount() { 
-//     this.fetchData() 
-//   }
-
-//   fetchData = async () => {
-//     try {
-//       const { fromCurrency, toCurrency } = this.state
-//       const res = await fetch(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${keys.alphaVantageAPIKey}`)
-//       const data = await res.json()
-//       const equity = data['Realtime Currency Exchange Rate']
-//       this.setState({ equity })
-//     }
-//     catch(err) { console.log(err) }
-//   }
-
-//   fetchDataAgain = async (e) => {
-//     e.preventDefault()
-//     try {
-//       const { fromCurrency, toCurrency } = this.state
-//       const res = await fetch(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${fromCurrency}&to_currency=${toCurrency}&apikey=${keys.alphaVantageAPIKey}`)
-//       const data = await res.json()
-//       const equity = data['Realtime Currency Exchange Rate']
-//       this.setState({ equity })
-//     }
-//     catch(err) { 
-//       console.log(err) 
-//     }
-//   }
-
-//   onChangeHandler = e => { this.setState({ [e.target.name]: e.target.value }) }
-
-
-//   render() {
-//     return (
-//       <div className="App">
-//         <h1>Currency Exchange</h1>
-//         <form onSubmit={this.fetchDataAgain}> 
-//           <input 
-//             placeholder='From' 
-//             onChange={this.onChangeHandler} 
-//             name='fromCurrency' 
-//             value={this.state.fromCurrency} 
-//           />
-//           <input 
-//             placeholder='To' 
-//             onChange={this.onChangeHandler} 
-//             name='toCurrency' 
-//             value={this.state.toCurrency} 
-//           />
-//           <button type='submit'>Submit</button>
-//         </form>
-//         { Object.keys(this.state.equity).map(equity => (
-//           equity.includes('Last Refreshed') 
-//           ? (
-//               <div key={equity[0]} className='data'>
-//                 <p className='key'>{`${equity.slice(2)}:`}</p> 
-//                 <p>{`${new Date(this.state.equity[equity]).toLocaleString()}`}</p>
-//               </div>
-//             ) 
-//           : (
-//               <div key={equity[0]} className='data'>
-//                 <p className='key'>{`${equity.slice(2).replace(/_/g, ' ')}:`}</p> 
-//                 <p>{`${this.state.equity[equity]}`}</p>
-//               </div>
-//             )
-//         )) }
-//       </div>
-//     )
-//   }
-// }
 
 export default App
