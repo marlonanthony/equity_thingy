@@ -1,36 +1,30 @@
-import React, { Component, useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
+import axios from 'axios' 
 import keys from './keys_dev'
 import './App.css'
 
 // goofy ass API with spaces in its keys work around
-const fromCurrencyCode = '1. From_Currency Code',
-      // fromCurrencyName = '2. From_Currency Name',
-      // toCurrencyCode = '3. To_Currency Code',
-      // toCurrencyName = '4. To_Currency Name', 
-      exchangeRate = '5. Exchange Rate',
-      // lastRefreshed = '6. Last Refreshed',
-      // timeZone = '7. Time Zone',
+const exchangeRate = '5. Exchange Rate',
       // bidPrice = '8. Bid Price',
       askPrice = '9. Ask Price'
 
 const App = () => {
-  const [currency, setCurrency] = useState('EUR') 
-  const [toCurrency, setToCurrency] = useState('USD') 
-  const [equity, setEquity] = useState({}) 
-  const [isLoading, setIsLoading] = useState(false) 
-  const [bankRoll, setBankRoll] = useState(100000)
-  const [pipDif, setPipDif] = useState(0)
-
-  let exchangeRatePurchasedAt = JSON.parse(localStorage.getItem('exchangeRate')) || '😿',
+  const [currency, setCurrency] = useState('EUR'),
+        [toCurrency, setToCurrency] = useState('USD'),
+        [equity, setEquity] = useState({}), 
+        [isLoading, setIsLoading] = useState(false), 
+        [bankRoll, setBankRoll] = useState(100000),
+        [pipDif, setPipDif] = useState(0)
+  
+  let exchangeRatePurchasedAt = JSON.parse(localStorage.getItem('exchangeRate')) || 0,
       purchasedBankRoll = JSON.parse(localStorage.getItem('bankRoll')),
-      pL = pipDif * 100000
+      pL = Math.round(pipDif * 100000)
 
   async function fetchData () {
     try {
       setIsLoading(true) 
-      const res = await fetch(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${currency}&to_currency=${toCurrency}&apikey=${keys.alphaVantageAPIKey}`)
-      const data = await res.json()
-      const equityData = data['Realtime Currency Exchange Rate']
+      const res = await axios.get(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${currency}&to_currency=${toCurrency}&apikey=${keys.alphaVantageAPIKey}`)
+      const equityData = res.data['Realtime Currency Exchange Rate']
       setEquity(equityData) 
       setIsLoading(false) 
     }
@@ -39,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     fetchData() 
-  }, [currency]) // Left toCurrency out of deps because I dont want to make http req onChange
+  }, [currency, toCurrency]) // Left toCurrency out of deps because I dont want to make http req onChange
 
   return (
     // <main className='container'>
@@ -48,18 +42,15 @@ const App = () => {
           <h1>Bank Roll <span>{(purchasedBankRoll + pL || bankRoll) +' EUR'}</span></h1>
           <div className='buy_sell'>
             <button onClick={(e) => {
-              // const newBankRoll = (bankRoll * equity[exchangeRate]).toFixed(4) 
               const newBankRoll = (bankRoll).toFixed(4) 
-              const storedExchangeRate = (equity[exchangeRate]).toFixed(4) 
+              const storedExchangeRate = (equity[exchangeRate])//.toFixed(4) 
               setBankRoll(newBankRoll)
               localStorage.setItem('exchangeRate', storedExchangeRate)
               localStorage.setItem('bankRoll', (bankRoll).toFixed(4))
-              console.log()
-              // localStorage.setItem('bankRoll', (bankRoll * equity[exchangeRate]).toFixed(4))
               }}>Buy
             </button>
             <p>PipDif: <span>{pipDif}</span></p>
-            <p>Profit/Loss: <span>{pL +' '+ currency}</span></p>
+            <p>Profit/Loss: <span>{(pL +' '+ currency)}</span></p>
             <p>PurchasedAt: <span>{exchangeRatePurchasedAt}</span></p>
             <button onClick={() => {
               const pipDifference = (equity[exchangeRate] - exchangeRatePurchasedAt).toFixed(4)
@@ -72,19 +63,22 @@ const App = () => {
           <h1>Currency Exchange</h1>
           <form onSubmit={(e) => {
             fetchData() 
+            setPipDif((equity[exchangeRate] - exchangeRatePurchasedAt).toFixed(4))
             e.preventDefault() 
           }}> 
             <input 
               placeholder={currency} 
               name='currency' 
               value={currency} 
+              // onChange={e => setCurrency(e.target.value)}
               readOnly
             />
             <input 
               placeholder='To' 
-              onChange={e => setToCurrency(e.target.value)}
+              // onChange={e => setToCurrency(e.target.value)}
               name='toCurrency' 
               value={toCurrency} 
+              readOnly
             />
             <button type='submit'>Update</button>
           </form>
@@ -106,7 +100,6 @@ const App = () => {
             )) 
           )}
         </section>
-
       </div>
     // </main>
   )

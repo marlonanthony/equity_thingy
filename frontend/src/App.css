@@ -1,6 +1,6 @@
 * { box-sizing: border-box; }
 h1 { text-align: center; color: var(--secondary-color); }
-h1 span { color: var(--text-color); }
+h1 span { color: var(--text-color); font-size: 22px; }
 button { padding: 0 10px; cursor: pointer; background: var(--secondary-color); color: white;  }
 
 .App {}
