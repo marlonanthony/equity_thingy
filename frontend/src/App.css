@@ -1,15 +1,13 @@
 * { box-sizing: border-box; }
-h1 { text-align: center; color: var(--secondary-color);}
-button {
-  padding: 0 10px;
-  cursor: pointer;
-}
+h1 { text-align: center; color: var(--secondary-color); }
+h1 span { color: var(--text-color); }
+button { padding: 0 10px; cursor: pointer; background: var(--secondary-color); color: white;  }
 
 .App {}
 
 .exchange_details {
   padding: 10px 10px 0px 10px;
-  width: 30%;
+  width: 40%;
   min-width: 400px;
   margin: 0 auto;
   margin-top: 50px;
@@ -25,6 +23,7 @@ button {
 .exchange_details form input {
   padding: 2px;
   text-transform: uppercase;
+  background: var(--text-color);
 }
 .exchange_details form input::placeholder {
   color: black;
@@ -47,10 +46,15 @@ button {
 
 .buy_sell {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   border: 1px solid var(--text-color);
+  min-width: 400px;
+  width: 40%;
+  margin: 0 auto;
+  font-size: 14px;
 }
 .buy_sell p {
   color: var(--secondary-color);
 }
 .buy_sell p span { color: var(--text-color);}
+.buy_sell button { background: var(--secondary-color); color: white; }
