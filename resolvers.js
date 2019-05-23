@@ -42,32 +42,33 @@ const resolvers = {
     },
 
     Mutation: {
-        createUser: async (args, req) => {
+        createUser: async (_, { email, password }) => {
             try {
-                const existingUser = await User.findOne({email: req.email})
+                const existingUser = await User.findOne({ email })
                 if(existingUser) { throw new Error('User exists already') }
-                const hashedPassword = await bcrypt.hash(req.password, 12)
+                const hashedPassword = await bcrypt.hash(password, 12)
                 const user = new User({
-                    email: req.email,
+                    email,
                     password: hashedPassword
                 })
                 const res = await user.save()
                 return {
-                    email: res.email,
+                    email,
                     id: res._id 
                 }
             }
             catch(err) { throw err }
         },
-        login: async (args, req) => {
+        login: async (_, { email, password }) => {
             try {
-                const user = await User.findOne({ email: req.email })
+                const user = await User.findOne({ email })
                 if(!user) { throw new Error('User does not exist!') }
-                const isEqual = await bcrypt.compare(req.password, user.password)
+                const isEqual = await bcrypt.compare(password, user.password)
                 if(!isEqual) { throw new Error('Password is incorrect') }
-                const token = jwt.sign({ id: user.id, email: user.email }, 'superdupersecretkey', {
+                const token = await jwt.sign({ id: user.id, email: user.email }, 'superdupersecretkey', {
                     expiresIn: '1h' 
                 })
+                
                 return token
                 // return { id: user.id, email: user.email, token, tokenExpiration: 1 }
             }
