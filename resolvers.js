@@ -52,7 +52,6 @@ const resolvers = {
                     password: hashedPassword
                 })
                 const res = await user.save()
-                console.log(res) 
                 return {
                     email: res.email,
                     id: res._id 
@@ -60,16 +59,17 @@ const resolvers = {
             }
             catch(err) { throw err }
         },
-        login: async ({ email, password }, req) => {
+        login: async (args, req) => {
             try {
-                const user = await User.findOne({ email })
+                const user = await User.findOne({ email: req.email })
                 if(!user) { throw new Error('User does not exist!') }
-                const isEqual = await bcrypt.compare(password, user.password)
+                const isEqual = await bcrypt.compare(req.password, user.password)
                 if(!isEqual) { throw new Error('Password is incorrect') }
-                const token = jwt.sign({ userId: user.id, email: user.email }, 'superdupersecretkey', {
+                const token = jwt.sign({ id: user.id, email: user.email }, 'superdupersecretkey', {
                     expiresIn: '1h' 
                 })
-                return { userId: user.id, token, tokenExpiration: 1 }
+                return token
+                // return { id: user.id, email: user.email, token, tokenExpiration: 1 }
             }
             catch (err) { console.log(err) }
         },

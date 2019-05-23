@@ -24,7 +24,7 @@ const typeDefs = gql`
     type Mutation {
         buyEquity(equityId: ID!): EquityUpdateResponse!
         sellEquity(equityId: ID!): EquityUpdateResponse!
-        login(email: String): String # return login token
+        login(email: String, password: String): String # return login token
         createUser(email: String, password: String): User 
     }
 
