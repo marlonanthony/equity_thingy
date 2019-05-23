@@ -12,9 +12,17 @@ const userSchema = new Schema({
     },
     equities: [
         {
-            purchasePrice: { type: Number, required: true, },
-            soldPrice: { type: Number },
-            lotSize: { type: Number, required: true }
+            purchasePrice: { 
+                type: Number, 
+                required: true, 
+            },
+            soldPrice: { 
+                type: Number 
+            },
+            lotSize: { 
+                type: Number, 
+                required: true 
+            }
         }
     ]
 })

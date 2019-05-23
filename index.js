@@ -1,5 +1,6 @@
 const { ApolloServer } = require('apollo-server') 
 const mongoose = require('mongoose') 
+const bodyParser = require('body-parser') 
 
 const typeDefs = require('./schema') 
 const resolvers = require('./resolvers') 
