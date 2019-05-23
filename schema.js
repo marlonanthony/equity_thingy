@@ -21,17 +21,17 @@ const typeDefs = gql`
         user(id: ID!): User 
     }
 
-    # type Mutation {
-    #     buyEquity(equityIds: [ID]!): EquityUpdateResponse!
-    #     sellEquity(equityId: ID!): EquityUpdateResponse!
-    #     login(email: String): String # return login token
-    # }
+    type Mutation {
+        buyEquity(equityIds: [ID]!): EquityUpdateResponse!
+        sellEquity(equityId: ID!): EquityUpdateResponse!
+        login(email: String): String # return login token
+    }
 
-    # type EquityUpdateResponse {
-    #     success: Boolean!
-    #     message: String
-    #     equities: [Equity]
-    # }
+    type EquityUpdateResponse {
+        success: Boolean!
+        message: String
+        equities: [Equity]
+    }
 `
 
 module.exports = typeDefs 

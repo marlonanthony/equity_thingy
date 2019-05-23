@@ -10,7 +10,7 @@ const users = [{
         {
             id: '1',
             purchasedPrice: '1.1151',
-
+            lotSize: '100000'
         },
         // {
         //     id: '2',
@@ -18,23 +18,12 @@ const users = [{
         // }
     ]
   },
-//   {
-//     id: '2',
-//     email: 'tonystark@gmail.com',
-//     equities: [{
-//       id: '3',
-//       purchasedPrice: 'Industrial design'
-//     },{
-//       id: '4',
-//       purchasedPrice: 'Robotic fashion'
-//     }]
-//   }
 ]
 
 const resolvers = {
     Query: {
         users: () => {
-            return users 
+            return users
         },
         user: (root, { id }) => {
             return users.find(user => user.id === id) 
