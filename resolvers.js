@@ -8,21 +8,20 @@ const resolvers = {
         equities: async () => {
             try {
                 const equities = await Equity.find()
-                return equities.map(equity => {
-                    return equity
-                })
-            }
-            catch(err) {
-                throw err 
-            }
+                return equities.map(equity => equity) 
+            } catch(err) { throw err }
         },
         user: async (_, { id }) => {
-            const user = await User.findById(id) 
-            return user
+            try {
+                const user = await User.findById(id) 
+                return user
+            } catch (err) { console.log(err) }
         },
         users: async () => {
-            const response = await User.find() 
-            return response.map(res => res) 
+            try {
+                const response = await User.find() 
+                return response.map(res => res) 
+            } catch (err) { console.log(err) }
         }
     },
 
