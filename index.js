@@ -1,12 +1,16 @@
 const { ApolloServer } = require('apollo-server') 
 const mongoose = require('mongoose') 
+const jwt = require('jsonwebtoken')
 
 const typeDefs = require('./schema') 
 const resolvers = require('./resolvers') 
+const isAuth = require('./middleware/is-auth')
 
 const server = new ApolloServer({ 
     context: async ({req}) => {
-        console.log(req.headers)
+        
+        // req.headers.authorization = token 
+        // console.log(req.headers.authorization = '123456')
     },
     typeDefs, 
     resolvers 

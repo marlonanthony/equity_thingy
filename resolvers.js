@@ -3,23 +3,6 @@ const jwt = require('jsonwebtoken')
 
 const User = require('./models/user')
 
-const users = [{
-    id: '1',
-    email: 'mad1083@gmail.com',
-    equities: [
-        {
-            id: '1',
-            purchasedPrice: '1.1151',
-            lotSize: '100000'
-        },
-        // {
-        //     id: '2',
-        //     purchasedPrice: '1.'
-        // }
-    ]
-  },
-]
-
 const resolvers = {
     Query: {
         equities: async () => {
@@ -33,12 +16,13 @@ const resolvers = {
                 throw err 
             }
         },
-        users: () => {
-            return users
-        },
-        user: (root, { id }) => {
+        user: (_, { id }) => {
             return users.find(user => user.id === id) 
         },
+        users: async () => {
+            const response = await User.find() 
+            return response.map(res => res) 
+        }
     },
 
     Mutation: {
@@ -65,12 +49,10 @@ const resolvers = {
                 if(!user) { throw new Error('User does not exist!') }
                 const isEqual = await bcrypt.compare(password, user.password)
                 if(!isEqual) { throw new Error('Password is incorrect') }
-                const token = await jwt.sign({ id: user.id, email: user.email }, 'superdupersecretkey', {
+                const token = await jwt.sign({ id: user.id }, 'superdupersecretkey', {
                     expiresIn: '1h' 
                 })
-                
-                return token
-                // return { id: user.id, email: user.email, token, tokenExpiration: 1 }
+                return { userId: user.id, token, tokenExpiration: 1 }
             }
             catch (err) { console.log(err) }
         },

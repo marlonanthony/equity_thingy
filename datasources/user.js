@@ -1,23 +1,29 @@
-const { DataSource } = require('apollo-datasource')
-const isEmail = require('isemail')
+// const { DataSource } = require('apollo-datasource')
+// const isEmail = require('isemail')
+// const bcrypt = require('bcryptjs')
+// const jwt = require('jsonwebtoken') 
 
-class UserAPI extends DataSource {
-  constructor({ store }) {
-    super()
-    this.store = store
-  }
-  
-  initialize(config) {
-    this.context = config.context
-  }
+// const User = require('../models/user') 
 
-  async findOrCreateUser({ email: emailArg } = {}) {
-    const email = this.context && this.context.user ? this.context.user.email : emailArg
-    if (!email || !isEmail.validate(email)) return null
+// class UserAPI extends DataSource {
+//   constructor({ store }) {
+//     super()
+//     this.store = store
+//   }
 
-    const users = await this.store.users.findOrCreate({ where: { email } })
-    return users && users[0] ? users[0] : null
-  }
-}
+//   initialize(config) {
+//     this.context = config.context
+//   }
 
-module.exports = UserAPI
+//   async createUser({ email: emailArg, password: passwordArg } = {}) {
+//     const email = emailArg
+//     if (!email || !isEmail.validate(email)) return null
+
+
+//     const users = await this.store.users.findOrCreate({ where: { email } })
+//     return users && users[0] ? users[0] : null
+//   }
+// }
+
+// module.exports = UserAPI
+
