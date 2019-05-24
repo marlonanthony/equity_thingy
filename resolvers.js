@@ -16,8 +16,9 @@ const resolvers = {
                 throw err 
             }
         },
-        user: (_, { id }) => {
-            return users.find(user => user.id === id) 
+        user: async (_, { id }) => {
+            const user = await User.findById(id) 
+            return user
         },
         users: async () => {
             const response = await User.find() 
