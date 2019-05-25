@@ -7,13 +7,17 @@ const resolvers = require('./resolvers')
 const isAuth = require('./middleware/is-auth')
 
 const server = new ApolloServer({
-    // context: async ({ req }) => {
-    //     const token = req.headers.authorization || '' 
+    context: async ({ req }) => {
+        const token = await req.headers.authorization || '' 
+        const userId = await req.headers.userid || '' 
+        console.log(req.headers) 
+        console.log(token)
+        console.log(userId)
 
-    //     const user = getUser(token) 
+        // const user = getUser(token) 
 
-    //     return { user }
-    // },
+        // return { user }
+    },
     typeDefs, 
     resolvers 
 })

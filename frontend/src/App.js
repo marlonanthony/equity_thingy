@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import axios from 'axios' 
 
 import keys from './keys_dev'
+import Logout from './components/Logout'
 import './App.css'
 
 const GET_USERS = gql`
@@ -56,31 +57,32 @@ const App = () => {
   //   fetchData() 
   // }, [currency, toCurrency]) // Left toCurrency out of deps because I dont want to make http req onChange
 
-  
+  /* variables={{ userId: "5ce709bac4343303e21cb581" }} */
   return (
-    <Query query={GET_USER} variables={{ userId: "5ce709bac4343303e21cb581" }}>
+    <Query query={GET_USERS} > 
       {({ data, loading, error }) => {
         if (loading) return <p>Loading...</p>
         if(error) return <p>error</p>
         
         return (
-          <div>
-            {data.user && (
-              <div>
-                <h1>{data.user.id && data.user.id}</h1>
-                <h1>{data.user.email && data.user.email}</h1>
-              </div>
-            )}
-          </div>
           // <div>
-          //   { data.users && 
-          //       data.users.map(user => (
-          //         <div key={user.id}>
-          //           <h1>{user.id}</h1>
-          //           <h1>{user.email}</h1>
-          //         </div>
-          //       ))}
+          //   {data.user && (
+          //     <div>
+          //       <h1>{data.user.id && data.user.id}</h1>
+          //       <h1>{data.user.email && data.user.email}</h1>
+          //     </div>
+          //   )}
           // </div>
+          <div>
+            <Logout />
+            { data.users && 
+                data.users.map(user => (
+                  <div key={user.id}>
+                    <h1>{user.id}</h1>
+                    <h1>{user.email}</h1>
+                  </div>
+                ))}
+          </div>
         )
 
 

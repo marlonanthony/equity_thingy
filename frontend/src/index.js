@@ -7,21 +7,24 @@ import { ApolloProvider, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import Login from './components/Login'
-import './index.css'
 import App from './App'
 import { resolvers, typeDefs } from './resolvers'
 import * as serviceWorker from './serviceWorker'
+import './index.css'
 
 const IS_LOGGED_IN = gql`
     query IsUserLogginIn {
         isLoggedIn @client
     }
 `
-
 const cache = new InMemoryCache() 
+
 const link = new HttpLink({ 
     uri: 'http://localhost:4000/graphql',
-    headers: { authorization: localStorage.getItem('token') } 
+    headers: { 
+        authorization: localStorage.getItem('token'),
+        userId: localStorage.getItem('userid') 
+    } 
 })
 const client = new ApolloClient({ 
     cache,
@@ -29,9 +32,11 @@ const client = new ApolloClient({
     typeDefs,
     resolvers
 })
+
 cache.writeData({
     data: {
         isLoggedIn: !!localStorage.getItem('token'),
+        userId: localStorage.getItem('userid')
     }
 })
 

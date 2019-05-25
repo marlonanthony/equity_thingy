@@ -11,12 +11,10 @@ export default class LoginForm extends Component {
     onSubmit = e => {
         const { email, password } = this.state
         e.preventDefault()
-        this.props.login({ variables: { email, password } });
-        console.log(email, password)
+        this.props.login({ variables: { email, password } })
     }
 
     render() {
-        console.log(this.props)
         return (
             <div style={{textAlign: 'center', marginTop: 50 }}>
                 <form onSubmit={this.onSubmit} style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>

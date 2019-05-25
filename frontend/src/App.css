@@ -14,12 +14,10 @@ button { padding: 0 10px; cursor: pointer; background: var(--secondary-color); c
   border: 1px solid var(--text-color);
   border-radius: 3px;
 }
-
 .exchange_details form {
   display: flex;
   justify-content: space-around;
 }
-
 .exchange_details form input {
   padding: 2px;
   text-transform: uppercase;
@@ -29,17 +27,14 @@ button { padding: 0 10px; cursor: pointer; background: var(--secondary-color); c
   color: black;
   text-transform: uppercase;
 }
-
 .data {
   display: flex;
   border-bottom: 1px solid var(--secondary-color);
   color: var(--text-color);
 }
-
 .data p {
   padding: 10px;
 }
-
 .data .key {
   color: var(--secondary-color);
 }
