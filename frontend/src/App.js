@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import axios from 'axios' 
 
 import keys from './keys_dev'
+// import Login from './components/Login' 
 import Logout from './components/Logout'
 import './App.css'
 
@@ -63,7 +64,7 @@ const App = () => {
       {({ data, loading, error }) => {
         if (loading) return <p>Loading...</p>
         if(error) return <p>error</p>
-        
+         
         return (
           // <div>
           //   {data.user && (

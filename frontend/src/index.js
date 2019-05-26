@@ -40,7 +40,7 @@ cache.writeData({
     }
 })
 
-
+console.log(cache) 
 
 ReactDOM.render(
     <ApolloProvider client={client}>
