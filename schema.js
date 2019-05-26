@@ -1,43 +1,49 @@
 const { gql } = require('apollo-server') 
 
 const typeDefs = gql`
+
+
     type User {
         id: ID!
         email: String!
-        equities: [Equity]!
+        bankroll: Float
+        # currencyPairs: [Pair]!
     }
 
-    type Equity {
-        id: ID!
-        purchasedPrice: Float!
-        soldPrice: Float
-        lotSize: Int!
+    type Pair {
+        id: ID
+        pair: String
+        lotSize: Int
+        purchasedAt: Float
+        soldAt: Float
+        pipDif: Float
+        profitLoss: Float
     }
 
-    type Query {
-        equities: [Equity]!
-        equity(id: ID!): Equity
-        users: [User] 
-        user(id: ID!): User 
-    }
-
-    type Mutation {
-        buyEquity(equityId: ID!): EquityUpdateResponse!
-        sellEquity(equityId: ID!): EquityUpdateResponse!
-        login(email: String, password: String): Auth!
-        createUser(email: String, password: String): User 
-    }
-
-    type EquityUpdateResponse {
+    type PairUpdateResponse {
         success: Boolean!
         message: String
-        equities: [Equity]
+        currencyPair: Pair
     }
 
     type Auth {
         userId: ID! 
         token: String!
         tokenExpiration: Int
+    }
+
+    type Query {
+        users: [User] 
+        user(id: ID!): User 
+        currencyPair(id: ID): Pair
+        currencyPairs: [Pair]!
+    }
+
+    type Mutation {
+        buyPair(pair: String, lotSize: Int, purchasedAt: Float, soldAt: Float, pipDif: Float): Pair!
+        sellPair(id: ID!): PairUpdateResponse!
+        login(email: String, password: String): Auth!
+        createUser(email: String, password: String): User 
     }
 `
 

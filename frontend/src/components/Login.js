@@ -22,7 +22,6 @@ export default function Login () {
                     mutation={LOGIN_USER}
                     onCompleted={({ login }) => {
                         localStorage.setItem('token', login.token)
-                        localStorage.setItem('userid', login.userId)
                         client.writeData({ data: { isLoggedIn: true } })
                     }}>
                     {(login, {loading, error }) => {

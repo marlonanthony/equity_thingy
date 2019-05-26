@@ -5,7 +5,9 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider, Query } from 'react-apollo'
 import gql from 'graphql-tag'
+import jwt from 'jsonwebtoken' 
 
+import keys from './keys_dev'
 import Login from './components/Login'
 import App from './App'
 import { resolvers, typeDefs } from './resolvers'
@@ -32,11 +34,13 @@ const client = new ApolloClient({
     typeDefs,
     resolvers
 })
+// const token = localStorage.getItem('token') || ''
+// const decodedToken = jwt.verify(token, 'key') || ''
 
 cache.writeData({
     data: {
         isLoggedIn: !!localStorage.getItem('token'),
-        userId: localStorage.getItem('userid')
+        // userId: decodedToken.id 
     }
 })
 

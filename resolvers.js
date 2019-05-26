@@ -2,14 +2,48 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken') 
 
 const User = require('./models/user')
+const keys = require('./config/keys_dev')
+
+const pairings = [
+    {
+        id: 1,
+        pair: 'EUR/USD',
+        lotSize: 100000,
+        purchasedAt: 1.2233,
+        soldAt: 1.4444,
+        pipDif: 0.2211,
+        profitLoss: 22110
+    },
+    {
+        id: 2,
+        pair: 'GBP/USD',
+        lotSize: 100000,
+        purchasedAt: 1.2233,
+        soldAt: 1.4444,
+        pipDif: 0.2211,
+        profitLoss: 22110
+    },
+
+]
+const PAIR = []
 
 const resolvers = {
     Query: {
-        equities: async () => {
+        currencyPairs: async () => {
             try {
-                const equities = await Equity.find()
-                return equities.map(equity => equity) 
+                return pairings.map(val => val) 
             } catch(err) { throw err }
+        },
+        currencyPair: async (_, {id}) => {
+            try {
+                const res = await pairings.map(pair => {
+                    if(pair.id == id) {
+                        return pair
+                    }
+                })
+                return res
+            }
+            catch (err) { console.log(err) }
         },
         user: async (_, { id }) => {
             try {
@@ -49,37 +83,50 @@ const resolvers = {
                 if(!user) { throw new Error('User does not exist!') }
                 const isEqual = await bcrypt.compare(password, user.password)
                 if(!isEqual) { throw new Error('Password is incorrect') }
-                const token = await jwt.sign({ id: user.id }, 'superdupersecretkey', {
+                const token = await jwt.sign({ id: user.id }, 'key', {
                     expiresIn: '1h' 
                 })
                 return { userId: user.id, token, tokenExpiration: 1 }
             }
             catch (err) { console.log(err) }
         },
-        buyEquity: async (args, req) => {
-            if(!req.isAuth) { throw new Error('Unauthenticated') }
-            const event = new Event({
-                title: args.eventInput.title,
-                description: args.eventInput.description,
-                price: +args.eventInput.price,
-                date: new Date(args.eventInput.date),
-                creator: req.userId
-            })
-            let createdEvent
-            try {
-                const res = await event.save()
-                createdEvent = transformEvent(res) 
-                const creator = await User.findById(req.userId)
-                if(!creator) { throw new Error('User not found.') }
-                creator.createdEvents.push(event) 
-                await creator.save() 
-                return createdEvent 
+        buyPair: async (_, args, req) => {
+            const pairing = {
+                id: Math.random().toString(),
+                pair: args.pair,
+                lotSize: args.lotSize,
+                purchasedAt: args.purchasedAt,
+                soldAt: args.soldAt,
+                pipDif: args.pipDif,
+                profitLoss: args.pipDif * args.lotSize
             }
-            catch(err) {
-                console.log(err)
-                throw err 
-            }
-        }
+            PAIR.push(pairing)
+            return pairing 
+        },
+        // buyEquity: async (args, req) => {
+        //     if(!req.isAuth) { throw new Error('Unauthenticated') }
+        //     const event = new Event({
+        //         title: args.eventInput.title,
+        //         description: args.eventInput.description,
+        //         price: +args.eventInput.price,
+        //         date: new Date(args.eventInput.date),
+        //         creator: req.userId
+        //     })
+        //     let createdEvent
+        //     try {
+        //         const res = await event.save()
+        //         createdEvent = transformEvent(res) 
+        //         const creator = await User.findById(req.userId)
+        //         if(!creator) { throw new Error('User not found.') }
+        //         creator.createdEvents.push(event) 
+        //         await creator.save() 
+        //         return createdEvent 
+        //     }
+        //     catch(err) {
+        //         console.log(err)
+        //         throw err 
+        //     }
+        // }
     }
 }
 
