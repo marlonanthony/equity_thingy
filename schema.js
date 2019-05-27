@@ -6,18 +6,21 @@ const typeDefs = gql`
     type User {
         id: ID!
         email: String!
+        password: String
         bankroll: Float
-        # currencyPairs: [Pair]!
+        currencyPairs: [Pair]
     }
 
     type Pair {
         id: ID
+        user: User 
         pair: String
         lotSize: Int
         purchasedAt: Float
         soldAt: Float
         pipDif: Float
         profitLoss: Float
+        createdAt: String
     }
 
     type PairUpdateResponse {
@@ -42,8 +45,8 @@ const typeDefs = gql`
     type Mutation {
         buyPair(pair: String, lotSize: Int, purchasedAt: Float, soldAt: Float, pipDif: Float): Pair!
         sellPair(id: ID!): PairUpdateResponse!
-        login(email: String, password: String): Auth!
-        createUser(email: String, password: String): User 
+        login(email: String!, password: String!): Auth!
+        createUser(email: String!, password: String!): User 
     }
 `
 

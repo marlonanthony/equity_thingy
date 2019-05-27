@@ -10,19 +10,14 @@ const userSchema = new Schema({
         type: String,
         required: true 
     },
-    equities: [
+    bankroll: {
+        type: Number,
+        default: 100000000
+    },
+    currencyPairs: [
         {
-            purchasePrice: { 
-                type: Number, 
-                required: true, 
-            },
-            soldPrice: { 
-                type: Number 
-            },
-            lotSize: { 
-                type: Number, 
-                required: true 
-            }
+            type: Schema.Types.ObjectId,
+            ref: 'Pair'
         }
     ]
 })

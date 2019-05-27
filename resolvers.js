@@ -2,46 +2,21 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken') 
 
 const User = require('./models/user')
+const Pair = require('./models/currencyPair') 
 const keys = require('./config/keys_dev')
-
-const pairings = [
-    {
-        id: 1,
-        pair: 'EUR/USD',
-        lotSize: 100000,
-        purchasedAt: 1.2233,
-        soldAt: 1.4444,
-        pipDif: 0.2211,
-        profitLoss: 22110
-    },
-    {
-        id: 2,
-        pair: 'GBP/USD',
-        lotSize: 100000,
-        purchasedAt: 1.2233,
-        soldAt: 1.4444,
-        pipDif: 0.2211,
-        profitLoss: 22110
-    },
-
-]
-const PAIR = []
 
 const resolvers = {
     Query: {
         currencyPairs: async () => {
             try {
-                return pairings.map(val => val) 
+                const result = await Pair.find().populate('user')
+                return [...result]
             } catch(err) { throw err }
         },
         currencyPair: async (_, {id}) => {
             try {
-                const res = await pairings.map(pair => {
-                    if(pair.id == id) {
-                        return pair
-                    }
-                })
-                return res
+                const result = await Pair.findById(id) 
+                return result 
             }
             catch (err) { console.log(err) }
         },
@@ -54,7 +29,7 @@ const resolvers = {
         users: async () => {
             try {
                 const response = await User.find() 
-                return response.map(res => res) 
+                return [...response]
             } catch (err) { console.log(err) }
         }
     },
@@ -91,17 +66,21 @@ const resolvers = {
             catch (err) { console.log(err) }
         },
         buyPair: async (_, args, req) => {
-            const pairing = {
-                id: Math.random().toString(),
-                pair: args.pair,
-                lotSize: args.lotSize,
-                purchasedAt: args.purchasedAt,
-                soldAt: args.soldAt,
-                pipDif: args.pipDif,
-                profitLoss: args.pipDif * args.lotSize
+            try {
+                const newPair = new Pair({
+                    pair: args.pair || '',
+                    lotSize: args.lotSize || 0,
+                    purchasedAt: args.purchasedAt || 0,
+                    soldAt: args.soldAt || 0,
+                    pipDif: args.pipDif || 0,
+                    profitLoss: args.pipDif * args.lotSize
+                })
+                const result = await newPair.save()
+                return result
+            } catch (err) { 
+                console.log(err) 
+                throw err
             }
-            PAIR.push(pairing)
-            return pairing 
         },
         // buyEquity: async (args, req) => {
         //     if(!req.isAuth) { throw new Error('Unauthenticated') }
