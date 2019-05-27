@@ -28,7 +28,7 @@ const resolvers = {
         },
         users: async () => {
             try {
-                const response = await User.find() 
+                const response = await User.find().populate('currencyPairs')
                 return [...response]
             } catch (err) { console.log(err) }
         }

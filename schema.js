@@ -13,7 +13,7 @@ const typeDefs = gql`
 
     type Pair {
         id: ID
-        user: User 
+        user: User
         pair: String
         lotSize: Int
         purchasedAt: Float
