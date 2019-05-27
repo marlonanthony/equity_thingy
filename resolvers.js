@@ -73,10 +73,15 @@ const resolvers = {
                     purchasedAt: args.purchasedAt || 0,
                     soldAt: args.soldAt || 0,
                     pipDif: args.pipDif || 0,
-                    profitLoss: args.pipDif * args.lotSize
+                    profitLoss: args.pipDif * args.lotSize,
+                    user: "5ceb8f65d49cd407e13919c7"
                 })
                 const result = await newPair.save()
-                return result
+                const user = await User.findById('5ceb8f65d49cd407e13919c7')
+                if(!user) throw new Error('User doesn\'t exist')
+                user.currencyPairs.push(newPair)
+                await user.save() 
+                return result 
             } catch (err) { 
                 console.log(err) 
                 throw err

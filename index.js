@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const typeDefs = require('./schema') 
 const resolvers = require('./resolvers') 
-// const keys = require('./config/keys_dev')
+const keys = require('./config/keys_dev')
 // const isAuth = require('./middleware/is-auth')
 
 const server = new ApolloServer({
@@ -17,7 +17,7 @@ const server = new ApolloServer({
 })
 
 mongoose
-.connect(`mongodb+srv://marlon:marlon123456@cluster0-qpcr4.mongodb.net/test?retryWrites=true`)
+.connect(`mongodb+srv://${keys.mongoUsername}:${keys.mongoPassword}@cluster0-qpcr4.mongodb.net/test?retryWrites=true`)
 .then(() => { 
     server.listen().then(({ url }) => {
         console.log(`🚀 Server ready at ${url}`)
