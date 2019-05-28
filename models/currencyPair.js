@@ -27,10 +27,8 @@ const pairSchema = new Schema({
     profitLoss: {
         type: Number
     },
-    createdAt: {
-        type: Date,
-        default: Date.now 
-    }
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('Pair', pairSchema) 

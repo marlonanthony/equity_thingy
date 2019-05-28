@@ -10,6 +10,10 @@ const userSchema = new Schema({
         type: String,
         required: true 
     },
+    name: {
+        type: String,
+        required: true 
+    },
     bankroll: {
         type: Number,
         default: 100000000
@@ -20,6 +24,8 @@ const userSchema = new Schema({
             ref: 'Pair'
         }
     ]
+}, {
+    timestamps: true
 })
 
 module.exports = mongoose.model('User', userSchema)
