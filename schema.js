@@ -25,12 +25,13 @@ const typeDefs = gql`
         profitLoss: Float
         createdAt: String
         updatedAt: String 
+        open: Boolean
     }
 
     type PairUpdateResponse {
         success: Boolean!
-        message: String
-        currencyPair: Pair
+        message: String!
+        currencyPair: Pair!
     }
 
     type Auth {
@@ -40,15 +41,15 @@ const typeDefs = gql`
     }
 
     type Query {
-        users: [User] 
-        user(id: ID!): User 
-        currencyPair(id: ID): Pair
-        currencyPairs: [Pair]!
+        users: [User!]! 
+        user(id: ID!): User!
+        currencyPair(id: ID!): Pair!
+        currencyPairs: [Pair!]
     }
 
     type Mutation {
-        buyPair(pair: String, lotSize: Int, purchasedAt: Float, soldAt: Float, pipDif: Float): Pair!
-        sellPair(id: ID!): PairUpdateResponse!
+        buyPair(pair: String!, lotSize: Int!, purchasedAt: Float!): PairUpdateResponse!
+        sellPair(id: ID!, soldAt: Float!): PairUpdateResponse!
         login(email: String!, password: String!): Auth!
         createUser(email: String!, password: String!, name: String!): User 
     }

@@ -27,6 +27,9 @@ const pairSchema = new Schema({
     profitLoss: {
         type: Number
     },
+    open: {
+        type: Boolean
+    }
 }, {
     timestamps: true
 })

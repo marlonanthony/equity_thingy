@@ -32,7 +32,7 @@ const resolvers = {
     Query: {
         currencyPairs: async () => {
             try {
-                const result = await Pair.find() .populate('user')
+                const result = await Pair.find().populate('user')
                 return [...result]
                 // return result.map(pair => {
                 //     console.log(pair)
@@ -45,14 +45,13 @@ const resolvers = {
         },
         currencyPair: async (_, {id}) => {
             try {
-                const result = await Pair.findById(id) 
+                const result = await Pair.findById(id).populate('user') 
                 return result 
-            }
-            catch (err) { console.log(err) }
+            } catch (err) { console.log(err) }
         },
         user: async (_, { id }) => {
             try {
-                const user = await User.findById(id) 
+                const user = await User.findById(id).populate('currencyPairs')
                 return user
             } catch (err) { console.log(err) }
         },
@@ -76,14 +75,7 @@ const resolvers = {
                     password: hashedPassword
                 })
                 const res = await user.save()
-                const { _id, bankroll, createdAt } = res
-                return {
-                    id: _id,
-                    name,
-                    email,
-                    bankroll,
-                    createdAt,
-                }
+                return { id: res._id, name, email }
             }
             catch(err) { throw err }
         },
@@ -102,28 +94,41 @@ const resolvers = {
         },
         buyPair: async (_, args, req) => {
             try {
-                const pipDifFloat = (args.soldAt - args.purchasedAt).toFixed(4)
-                
                 const newPair = new Pair({
                     pair: args.pair || '',
                     lotSize: args.lotSize || 0,
                     purchasedAt: args.purchasedAt || 0,
-                    soldAt: args.soldAt || 0,
-                    pipDif: pipDifFloat || 0,
-                    profitLoss: pipDifFloat * args.lotSize,
-                    user: "5ceb8f65d49cd407e13919c7"
+                    open: true,
+                    user: "5cec859f39478a08113a7e09"
                 })
-                const result = await newPair.save()
-                const user = await User.findById('5ceb8f65d49cd407e13919c7')
+                const result = await newPair.save(),
+                      user = await User.findById('5cec859f39478a08113a7e09')
                 if(!user) throw new Error('User doesn\'t exist')
                 user.currencyPairs.push(newPair)
                 user.bankroll -= args.lotSize
                 await user.save() 
-                return result 
-            } catch (err) { 
-                console.log(err) 
-                throw err
-            }
+                const message = `Congrats ${user.name}! You've purchased ${result.pair} at ${result.purchasedAt}`,
+                      success = true
+                return { success, message, currencyPair: result } 
+            } catch (err) { throw err }
+        },
+        sellPair: async (_, args, req) => {
+            try {
+                const pair = await Pair.findById(args.id)
+                const pipDifFloat = (args.soldAt - pair.purchasedAt).toFixed(4)
+                pair.soldAt = args.soldAt
+                pair.pipDif = pipDifFloat 
+                pair.profitLoss = pipDifFloat * pair.lotSize
+                pair.open = false 
+                const savedPair = await pair.save()
+                const user = await User.findById(savedPair.user)
+                user.bankroll += savedPair.profitLoss
+                await user.save()
+
+                const success = true,
+                      message = `${user.name} you've sold ${savedPair.pair} for a profit/loss of ${savedPair.profitLoss}.`
+                return { success, message, currencyPair: savedPair }
+            } catch (err) { throw err }
         },
         // buyEquity: async (args, req) => {
         //     if(!req.isAuth) { throw new Error('Unauthenticated') }
