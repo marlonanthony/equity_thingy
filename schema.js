@@ -8,7 +8,7 @@ const typeDefs = gql`
         name: String!
         email: String!
         password: String
-        bankroll: Float
+        bankroll: Float!
         currencyPairs: [Pair]
         createdAt: String
         updatedAt: String 
@@ -16,16 +16,16 @@ const typeDefs = gql`
 
     type Pair {
         id: ID!
-        user: User
+        user: User!
         pair: String!
         lotSize: Int!
         purchasedAt: Float!
+        open: Boolean!
         soldAt: Float
         pipDif: Float
         profitLoss: Float
-        createdAt: String
-        updatedAt: String 
-        open: Boolean
+        createdAt: String!
+        updatedAt: String! 
     }
 
     type PairUpdateResponse {

@@ -16,7 +16,8 @@ const userSchema = new Schema({
     },
     bankroll: {
         type: Number,
-        default: 100000000
+        default: 1000000,
+        required: true
     },
     currencyPairs: [
         {

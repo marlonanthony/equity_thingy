@@ -28,7 +28,8 @@ const pairSchema = new Schema({
         type: Number
     },
     open: {
-        type: Boolean
+        type: Boolean,
+        required: true 
     }
 }, {
     timestamps: true
