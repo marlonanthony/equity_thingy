@@ -29,7 +29,8 @@ const pairSchema = new Schema({
     },
     open: {
         type: Boolean,
-        required: true 
+        required: true,
+        default: false
     }
 }, {
     timestamps: true

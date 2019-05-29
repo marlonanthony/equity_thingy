@@ -7,7 +7,7 @@ import { ApolloProvider, Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken' 
 
-import keys from './keys_dev'
+// import keys from './keys_dev'
 import Login from './components/Login'
 import App from './App'
 import { resolvers, typeDefs } from './resolvers'
@@ -17,6 +17,7 @@ import './index.css'
 const IS_LOGGED_IN = gql`
     query IsUserLogginIn {
         isLoggedIn @client
+        token @client
     }
 `
 const cache = new InMemoryCache() 
@@ -34,22 +35,24 @@ const client = new ApolloClient({
     typeDefs,
     resolvers
 })
-// const token = localStorage.getItem('token') || ''
-// const decodedToken = jwt.verify(token, 'key') || ''
 
 cache.writeData({
     data: {
         isLoggedIn: !!localStorage.getItem('token'),
-        // userId: decodedToken.id 
+        token: localStorage.getItem('token') || ''
     }
 })
 
-console.log(cache) 
+// if(cache.data.data.ROOT_QUERY.token) {
+//     console.log(jwt.verify(cache.data.data.ROOT_QUERY.token, 'key')) 
+// }
 
 ReactDOM.render(
     <ApolloProvider client={client}>
         <Query query={IS_LOGGED_IN}>
-            {({ data }) => (data.isLoggedIn ? <App /> : <Login />)}
+            {({ data }) => { 
+                return data.isLoggedIn && data.isLoggedIn ? <App /> : <Login />
+            }}
         </Query>
     </ApolloProvider>, document.getElementById('root')
 );

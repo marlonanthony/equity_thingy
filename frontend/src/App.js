@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 import axios from 'axios' 
+import jwt from 'jsonwebtoken'
 
 import keys from './keys_dev'
 // import Login from './components/Login' 
@@ -10,9 +11,20 @@ import './App.css'
 
 const GET_USERS = gql`
   query GetUsers {
+    isLoggedIn @client
+    token @client
     users {
       id
-      email
+      currencyPairs {
+        id
+        pair 
+        lotSize
+        pipDif
+        profitLoss
+        purchasedAt
+        soldAt
+        open
+      }
     }
   }
 `
@@ -62,9 +74,9 @@ const App = () => {
   return (
     <Query query={GET_USERS} > 
       {({ data, loading, error }) => {
-        if (loading) return <p>Loading...</p>
-        if(error) return <p>error</p>
-         
+        if (loading) return <h1>Loading...</h1>
+        if(error) return <h1>Error</h1>
+        const decodedToken = data.token && jwt.verify(data.token, keys.secretOrKey)
         return (
           // <div>
           //   {data.user && (
@@ -79,8 +91,19 @@ const App = () => {
             { data.users && 
                 data.users.map(user => (
                   <div key={user.id}>
-                    <h1>{user.id}</h1>
-                    <h1>{user.email}</h1>
+                    { user.currencyPairs && user.currencyPairs.map(cPair => (
+                      <div key={cPair.id} style={{ margin: 100 }}>
+                        <p>{user.id}</p>
+                        <p>ID: {cPair.id}</p>
+                        <p>Pair: {cPair.pair}</p>
+                        <p>Lot Size: {cPair.lotSize}</p>
+                        <p>Purchased at: {cPair.purchasedAt}</p>
+                        <p>Sold At: {cPair.soldAt}</p>
+                        <p>Pip Dif: {cPair.pipDif}</p>
+                        <p>Profit/Loss: {cPair.profitLoss}</p>
+                        { cPair.open && <p>Open: {cPair.open ? 'true' : 'false'}</p> }
+                      </div>
+                    ))}
                   </div>
                 ))}
           </div>

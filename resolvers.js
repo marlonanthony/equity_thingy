@@ -85,7 +85,8 @@ const resolvers = {
                 if(!user) { throw new Error('User does not exist!') }
                 const isEqual = await bcrypt.compare(password, user.password)
                 if(!isEqual) { throw new Error('Password is incorrect') }
-                const token = await jwt.sign({ id: user.id }, 'key', {
+                console.log(user.id) 
+                const token = await jwt.sign({ id: user.id, email, name: user.name }, keys.secretOrKey, {
                     expiresIn: '1h' 
                 })
                 return { userId: user.id, token, tokenExpiration: 1 }
