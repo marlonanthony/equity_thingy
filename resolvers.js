@@ -60,7 +60,8 @@ const resolvers = {
                 const response = await User.find().populate('currencyPairs')
                 return [...response]
             } catch (err) { console.log(err) }
-        }
+        },
+        test: async (_, __, { dataSources }) => dataSources.currencyAPI.getCurrencyPair()
     },
 
     Mutation: {

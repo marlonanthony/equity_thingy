@@ -1,7 +1,7 @@
 const { ApolloServer } = require('apollo-server') 
 const mongoose = require('mongoose') 
 // const jwt = require('jsonwebtoken')
-
+const CurrencyAPI = require('./datasources/currencies')
 const typeDefs = require('./schema') 
 const resolvers = require('./resolvers') 
 const keys = require('./config/keys_dev')
@@ -20,7 +20,10 @@ const server = new ApolloServer({
         // return user && { ...user, password: null } 
     },
     typeDefs, 
-    resolvers 
+    resolvers,
+    dataSources: () => ({
+        currencyAPI: new CurrencyAPI()
+    })
 })
 
 mongoose

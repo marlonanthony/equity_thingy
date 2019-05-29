@@ -15,17 +15,17 @@ const typeDefs = gql`
     }
 
     type Pair {
-        id: ID!
-        user: User!
-        pair: String!
-        lotSize: Int!
-        purchasedAt: Float!
-        open: Boolean!
+        id: ID
+        user: User
+        pair: String
+        lotSize: Int
+        purchasedAt: Float
+        open: Boolean
         soldAt: Float
         pipDif: Float
         profitLoss: Float
-        createdAt: String!
-        updatedAt: String! 
+        createdAt: String
+        updatedAt: String
     }
 
     type PairUpdateResponse {
@@ -45,6 +45,7 @@ const typeDefs = gql`
         user(id: ID!): User!
         currencyPair(id: ID!): Pair!
         currencyPairs: [Pair!]
+        test: Pair 
     }
 
     type Mutation {
