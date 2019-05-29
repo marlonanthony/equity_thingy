@@ -26,7 +26,7 @@ export default function Login () {
                     }}>
                     {(login, {loading, error }) => {
                         if(loading) return <p>Loading...</p>
-                        if(error) return <p>Error: {error}</p>
+                        if(error) return <p>Error</p>
                         return <LoginForm login={login} />
                     } }
                 </Mutation>
