@@ -15,17 +15,29 @@ const typeDefs = gql`
     }
 
     type Pair {
-        id: ID
-        user: User
-        pair: String
-        lotSize: Int
-        purchasedAt: Float
-        open: Boolean
+        id: ID!
+        user: User!
+        pair: String!
+        lotSize: Int!
+        purchasedAt: Float!
+        open: Boolean!
         soldAt: Float
         pipDif: Float
         profitLoss: Float
-        createdAt: String
-        updatedAt: String
+        createdAt: String!
+        updatedAt: String!
+    }
+
+    type DefaultPairDisplay {
+        fromCurrency: String 
+        fromCurrencyName: String 
+        toCurrency: String 
+        toCurrencyName: String 
+        exchangeRate: String 
+        lastRefreshed: String 
+        timeZone: String 
+        bidPrice: String 
+        askPrice: String
     }
 
     type PairUpdateResponse {
@@ -45,7 +57,7 @@ const typeDefs = gql`
         user(id: ID!): User!
         currencyPair(id: ID!): Pair!
         currencyPairs: [Pair!]
-        test: Pair 
+        test(FC: String, TC: String): DefaultPairDisplay 
     }
 
     type Mutation {

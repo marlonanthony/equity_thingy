@@ -61,7 +61,7 @@ const resolvers = {
                 return [...response]
             } catch (err) { console.log(err) }
         },
-        test: async (_, __, { dataSources }) => dataSources.currencyAPI.getCurrencyPair()
+        test: async (_, {FC, TC}, { dataSources }) => dataSources.currencyAPI.getCurrencyPair(FC, TC)
     },
 
     Mutation: {
