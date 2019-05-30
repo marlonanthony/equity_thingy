@@ -7,7 +7,6 @@ import { ApolloProvider } from 'react-apollo'
 
 import App from './App'
 import { resolvers, typeDefs } from './resolvers'
-import * as serviceWorker from './serviceWorker'
 import './index.css'
 
 const cache = new InMemoryCache() 
@@ -37,5 +36,3 @@ ReactDOM.render(
         <App />
     </ApolloProvider>, document.getElementById('root')
 );
-
-serviceWorker.unregister()

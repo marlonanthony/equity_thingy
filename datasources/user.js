@@ -54,22 +54,45 @@ class UserAPI extends DataSource {
   }
 
   async purchase({ pair, lotSize, purchasedAt, user }) {
-    const newPair = new Pair({
-      pair,
-      lotSize,
-      purchasedAt,
-      open: true,
-      user: user._id
-    })
-    const result = await newPair.save(),
-          foundUser = await User.findById(user._id)
-    if(!foundUser) throw new Error('User doesn\'t exist')
-    foundUser.currencyPairs.push(newPair)
-    foundUser.bankroll -= lotSize
-    await foundUser.save() 
-    const message = `Congrats ${foundUser.name}! You've purchased ${result.pair} at ${result.purchasedAt}`,
-          success = true
-    return { success, message, currencyPair: result } 
+    try {
+      const newPair = new Pair({
+        pair,
+        lotSize,
+        purchasedAt,
+        open: true,
+        user: user._id
+      })
+      const result = await newPair.save(),
+            foundUser = await User.findById(user._id)
+      if(!foundUser) throw new Error('User doesn\'t exist')
+      foundUser.currencyPairs.push(newPair)
+      foundUser.bankroll -= lotSize
+      await foundUser.save() 
+      const message = `Congrats ${foundUser.name}! You've purchased ${result.pair} at ${result.purchasedAt}`,
+            success = true
+      return { success, message, currencyPair: result } 
+    } 
+    catch (err) { throw err }
+  }
+
+  async closePosition({ id, soldAt, user }) {
+    try {
+      const pair = await Pair.findById(id)
+      const pipDifFloat = (soldAt - pair.purchasedAt).toFixed(4)
+      pair.soldAt = soldAt
+      pair.pipDif = pipDifFloat 
+      pair.profitLoss = pipDifFloat * pair.lotSize
+      pair.open = false 
+      const savedPair = await pair.save()
+      const user = await User.findById(savedPair.user)
+      user.bankroll += savedPair.profitLoss
+      await user.save()
+
+      const success = true,
+            message = `${user.name} you've sold ${savedPair.pair} for a profit/loss of ${savedPair.profitLoss}.`
+      return { success, message, currencyPair: savedPair }
+    } 
+    catch (err) { throw err }
   }
 }
 

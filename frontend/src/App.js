@@ -91,7 +91,6 @@ const App = () => {
       <Header />
       <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
         {({ data, loading, error }) => {
-          console.log(data)
           if (loading) return <h1>Loading...</h1>
           if(error) return <h1>Error</h1>
           return  data && data.currencyPairInfo && (

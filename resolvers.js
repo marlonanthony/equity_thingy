@@ -56,22 +56,10 @@ const resolvers = {
                 return buy 
             } catch (err) { throw err }
         },
-        sellPair: async (_, args, req) => {
+        sellPair: async (_, {id, soldAt}, { dataSources, user }) => {
             try {
-                const pair = await Pair.findById(args.id)
-                const pipDifFloat = (args.soldAt - pair.purchasedAt).toFixed(4)
-                pair.soldAt = args.soldAt
-                pair.pipDif = pipDifFloat 
-                pair.profitLoss = pipDifFloat * pair.lotSize
-                pair.open = false 
-                const savedPair = await pair.save()
-                const user = await User.findById(savedPair.user)
-                user.bankroll += savedPair.profitLoss
-                await user.save()
-
-                const success = true,
-                      message = `${user.name} you've sold ${savedPair.pair} for a profit/loss of ${savedPair.profitLoss}.`
-                return { success, message, currencyPair: savedPair }
+                const sell = await dataSources.userAPI.closePosition({ id, soldAt, user })
+                return sell     
             } catch (err) { throw err }
         },
     },
