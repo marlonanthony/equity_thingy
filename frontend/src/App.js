@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-import axios from 'axios' 
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 
-import keys from './keys_dev'
+// import keys from './keys_dev'
 import Header from './components/Header'
 import './App.css'
 
@@ -102,8 +101,7 @@ const App = () => {
                   { setAskPrice(+data.currencyPairInfo.askPrice) }
                   <Mutation
                     mutation={BUY_PAIR}
-                    variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }} 
-                    >
+                    variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}>
                     {(buyPair, { data, loading, error }) => {
                       if(loading) return <p>Loading</p>
                       if(error) return <p>Error</p>

@@ -3,30 +3,7 @@ const jwt = require('jsonwebtoken')
 
 const User = require('./models/user')
 const Pair = require('./models/currencyPair') 
-const keys = require('./config/keys_dev')
-
-// const populateUser = async (userId) => {
-//     try {
-//         const user = await User.findById(userId) 
-//         console.log(user) 
-//         return {
-//             user
-//         }
-//     } catch (err) { throw err }
-// }
-
-// const populatePairs = async pairIds => {
-//     try {
-//         const pairs = await Pair.find({ _id: { $in: pairIds } })
-//         console.log(pairs) 
-//         return pair.map(pair => {
-//             return {
-//                 ...pair,
-//                 user: populateUser.bind(this, pair.user)
-//             }
-//         })
-//     } catch(err) { throw err }
-// }
+// const keys = require('./config/keys_dev')
 
 const resolvers = {
     Query: {
@@ -34,13 +11,6 @@ const resolvers = {
             try {
                 const result = await Pair.find().populate('user')
                 return [...result]
-                // return result.map(pair => {
-                //     console.log(pair)
-                //     return {
-                //         ...pair,
-                //         user: populateUser.bind(this, pair.user)
-                //     }
-                // })
             } catch(err) { throw err }
         },
         currencyPair: async (_, {id}) => {
@@ -61,7 +31,7 @@ const resolvers = {
                 return [...response]
             } catch (err) { console.log(err) }
         },
-        currencyPairInfo: async (_, {fc, tc}, { dataSources, user }) => {
+        currencyPairInfo: async (_, {fc, tc}, { dataSources }) => {
             const currencyPairs = await dataSources.currencyAPI.getCurrencyPair(fc, tc)
             return currencyPairs
         }
@@ -81,12 +51,10 @@ const resolvers = {
             } catch (err) { console.log(err) }
         },
         buyPair: async (_, {pair, lotSize, purchasedAt}, { dataSources, user }) => {
-            console.log(dataSources.user)
             try {
                 const buy = await dataSources.userAPI.purchase({pair, lotSize, purchasedAt, user})
                 return buy 
-            }
-            catch (err) { throw err }
+            } catch (err) { throw err }
         },
         sellPair: async (_, args, req) => {
             try {
@@ -106,34 +74,7 @@ const resolvers = {
                 return { success, message, currencyPair: savedPair }
             } catch (err) { throw err }
         },
-        // buyEquity: async (args, req) => {
-        //     if(!req.isAuth) { throw new Error('Unauthenticated') }
-        //     const event = new Event({
-        //         title: args.eventInput.title,
-        //         description: args.eventInput.description,
-        //         price: +args.eventInput.price,
-        //         date: new Date(args.eventInput.date),
-        //         creator: req.userId
-        //     })
-        //     let createdEvent
-        //     try {
-        //         const res = await event.save()
-        //         createdEvent = transformEvent(res) 
-        //         const creator = await User.findById(req.userId)
-        //         if(!creator) { throw new Error('User not found.') }
-        //         creator.createdEvents.push(event) 
-        //         await creator.save() 
-        //         return createdEvent 
-        //     }
-        //     catch(err) {
-        //         console.log(err)
-        //         throw err 
-        //     }
-        // }
     },
-    // User: {
-    //     currencyPairs: async (_, __, { dataSources }) => dataSources.userAPI
-    // }
 
 }
 
