@@ -61,7 +61,10 @@ const resolvers = {
                 return [...response]
             } catch (err) { console.log(err) }
         },
-        currencyPairInfo: async (_, {fc, tc}, { dataSources }) => dataSources.currencyAPI.getCurrencyPair(fc, tc)
+        currencyPairInfo: async (_, {fc, tc}, { dataSources, user }) => {
+            const currencyPairs = await dataSources.currencyAPI.getCurrencyPair(fc, tc)
+            return currencyPairs
+        }
     },
 
     Mutation: {
@@ -77,25 +80,13 @@ const resolvers = {
                 return loggedInUser
             } catch (err) { console.log(err) }
         },
-        buyPair: async (_, args, req) => {
+        buyPair: async (_, {pair, lotSize, purchasedAt}, { dataSources, user }) => {
+            console.log(dataSources.user)
             try {
-                const newPair = new Pair({
-                    pair: args.pair || '',
-                    lotSize: args.lotSize || 0,
-                    purchasedAt: args.purchasedAt || 0,
-                    open: true,
-                    user: "5cec859f39478a08113a7e09"
-                })
-                const result = await newPair.save(),
-                      user = await User.findById('5cec859f39478a08113a7e09')
-                if(!user) throw new Error('User doesn\'t exist')
-                user.currencyPairs.push(newPair)
-                user.bankroll -= args.lotSize
-                await user.save() 
-                const message = `Congrats ${user.name}! You've purchased ${result.pair} at ${result.purchasedAt}`,
-                      success = true
-                return { success, message, currencyPair: result } 
-            } catch (err) { throw err }
+                const buy = await dataSources.userAPI.purchase({pair, lotSize, purchasedAt, user})
+                return buy 
+            }
+            catch (err) { throw err }
         },
         sellPair: async (_, args, req) => {
             try {
@@ -139,7 +130,11 @@ const resolvers = {
         //         throw err 
         //     }
         // }
-    }
+    },
+    // User: {
+    //     currencyPairs: async (_, __, { dataSources }) => dataSources.userAPI
+    // }
+
 }
 
 module.exports = resolvers

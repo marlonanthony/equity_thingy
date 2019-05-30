@@ -61,7 +61,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        buyPair(pair: String!, lotSize: Int!, purchasedAt: Float!): PairUpdateResponse!
+        buyPair(pair: String!, lotSize: Int, purchasedAt: Float!): PairUpdateResponse!
         sellPair(id: ID!, soldAt: Float!): PairUpdateResponse!
         login(email: String!, password: String!): Auth!
         createUser(email: String!, password: String!, name: String!): User 

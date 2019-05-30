@@ -6,7 +6,7 @@ const UserAPI = require('./datasources/user')
 const typeDefs = require('./schema') 
 const resolvers = require('./resolvers') 
 const keys = require('./config/keys_dev')
-// const User = require('./models/user')
+const User = require('./models/user')
 // const isAuth = require('./middleware/is-auth')
 
 const server = new ApolloServer({
@@ -17,15 +17,12 @@ const server = new ApolloServer({
         userAPI: new UserAPI() 
     }),
     context: async ({ req }) => {
-        // get token from headers
-        // verify and decode token
-        // use user id to find and return user, placing user on context
-        const token = await req.headers.authorization || ''
-        if(token) console.log(token)
-        // const decodedToken = await jwt.verify(token, keys.secretOrKey) || ''
-        // const id = decodedToken.id || ''
-        // const user = await User.findById(id) || ''
-        // return user && { ...user, password: null } 
+        const auth = (req.headers && req.headers.authorization) || ''
+        const decodedToken = jwt.decode(auth, keys.secretOrKey) || ''
+        const user = await User.findById(decodedToken.id)
+        // console.log(decodedToken)
+        // console.log(user) 
+        return { user }
     },
 })
 
