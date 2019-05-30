@@ -61,38 +61,21 @@ const resolvers = {
                 return [...response]
             } catch (err) { console.log(err) }
         },
-        test: async (_, {FC, TC}, { dataSources }) => dataSources.currencyAPI.getCurrencyPair(FC, TC)
+        currencyPairInfo: async (_, {fc, tc}, { dataSources }) => dataSources.currencyAPI.getCurrencyPair(fc, tc)
     },
 
     Mutation: {
-        createUser: async (_, { email, password, name }) => {
+        createUser: async (_, { email, password, name }, { dataSources }) => {
             try {
-                const existingUser = await User.findOne({ email })
-                if(existingUser) { throw new Error('User exists already') }
-                const hashedPassword = await bcrypt.hash(password, 12)
-                const user = new User({
-                    name,
-                    email,
-                    password: hashedPassword
-                })
-                const res = await user.save()
-                return { id: res._id, name, email }
-            }
-            catch(err) { throw err }
+                const newUser = await dataSources.userAPI.createNewUser({ email, password, name }) 
+                if(newUser) return newUser
+            } catch(err) { throw err }
         },
-        login: async (_, { email, password }) => {
+        login: async (_, { email, password }, { dataSources }) => {
             try {
-                const user = await User.findOne({ email })
-                if(!user) { throw new Error('User does not exist!') }
-                const isEqual = await bcrypt.compare(password, user.password)
-                if(!isEqual) { throw new Error('Password is incorrect') }
-                console.log(user.id) 
-                const token = await jwt.sign({ id: user.id, email, name: user.name }, keys.secretOrKey, {
-                    expiresIn: '1h' 
-                })
-                return { userId: user.id, token, tokenExpiration: 1 }
-            }
-            catch (err) { console.log(err) }
+                const loggedInUser = await dataSources.userAPI.loginUser({ email, password })
+                return loggedInUser
+            } catch (err) { console.log(err) }
         },
         buyPair: async (_, args, req) => {
             try {

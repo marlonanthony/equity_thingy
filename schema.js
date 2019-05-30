@@ -29,12 +29,12 @@ const typeDefs = gql`
     }
 
     type DefaultPairDisplay {
-        fromCurrency: String 
+        fromCurrency: String! 
         fromCurrencyName: String 
-        toCurrency: String 
+        toCurrency: String! 
         toCurrencyName: String 
-        exchangeRate: String 
-        lastRefreshed: String 
+        exchangeRate: String! 
+        lastRefreshed: String
         timeZone: String 
         bidPrice: String 
         askPrice: String
@@ -57,7 +57,7 @@ const typeDefs = gql`
         user(id: ID!): User!
         currencyPair(id: ID!): Pair!
         currencyPairs: [Pair!]
-        test(FC: String, TC: String): DefaultPairDisplay 
+        currencyPairInfo(fc: String, tc: String): DefaultPairDisplay!
     }
 
     type Mutation {
