@@ -36,6 +36,7 @@
 .nav-items a:hover,
 .nav-items a:active,
 .nav-items li:hover,
-.nav-items li:active {
+.nav-items li:active,
+.nav-items a.active {
     color: black;
 }

@@ -9,7 +9,7 @@ import App from './App'
 import { resolvers, typeDefs } from './resolvers'
 import './index.css'
 
-const cache = new InMemoryCache() 
+const cache = new InMemoryCache()
 
 const link = new HttpLink({ 
     uri: 'http://localhost:4000/graphql',
