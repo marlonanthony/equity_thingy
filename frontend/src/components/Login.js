@@ -1,6 +1,7 @@
 import React from 'react'
 import { Mutation, ApolloConsumer } from 'react-apollo'
 import gql from 'graphql-tag' 
+import {withRouter} from 'react-router-dom'
 
 import LoginForm from './LoginForm' 
 
@@ -14,7 +15,7 @@ const LOGIN_USER = gql`
     }
 `
 
-export default function Login () {
+function Login (props) {
     return (
         <ApolloConsumer>
             {client => (
@@ -23,6 +24,7 @@ export default function Login () {
                     onCompleted={({ login }) => {
                         localStorage.setItem('token', login.token)
                         client.writeData({ data: { isLoggedIn: true } })
+                        props.history.push('/')
                     }}>
                     {(login, {loading, error }) => {
                         if(loading) return <p>Loading...</p>
@@ -34,3 +36,5 @@ export default function Login () {
         </ApolloConsumer>
     )
 }
+
+export default withRouter(Login)

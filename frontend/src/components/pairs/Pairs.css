@@ -1,0 +1,23 @@
+.my_currency_pairs_container {
+    /* margin-bottom: 200px; */
+}
+
+.my_currency_pairs_wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.my_currency_pairs {
+    border: 1px solid white;
+    padding: 10px;
+    margin: 10px;
+    min-width: 250px;
+}
+.my_currency_pairs:active,
+.my_currency_pairs:hover {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--secondary-color);
+    cursor: pointer;
+}

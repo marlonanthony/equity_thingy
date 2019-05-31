@@ -3,6 +3,7 @@ h1 { text-align: center; color: var(--secondary-color); }
 h1 span { color: var(--text-color); font-size: 22px; }
 p { color: var(--text-color); }
 button { padding: 0 10px; cursor: pointer; background: var(--secondary-color); color: white;  }
+a { text-decoration: none; }
 
 .App {}
 

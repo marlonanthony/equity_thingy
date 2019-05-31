@@ -5,12 +5,12 @@ export default function Logout() {
     return (
         <ApolloConsumer>
             {client => (
-                <button onClick={() => {
+                <li onClick={() => {
                     client.writeData({ data: { isLoggedIn: false } })
                     localStorage.clear() 
                 }}>
                     Logout
-                </button>
+                </li>
             )}
         </ApolloConsumer>
     )

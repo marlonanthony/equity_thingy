@@ -1,9 +1,5 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken') 
-
 const User = require('./models/user')
 const Pair = require('./models/currencyPair') 
-// const keys = require('./config/keys_dev')
 
 const resolvers = {
     Query: {

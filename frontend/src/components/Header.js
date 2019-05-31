@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
+import { NavLink } from 'react-router-dom' 
 
 import Logout from './Logout'
-import Login from './Login'
+import './Header.css'
 
 const IS_LOGGED_IN = gql`
     query IsUserLogginIn {
@@ -15,11 +16,24 @@ const IS_LOGGED_IN = gql`
 export default class Header extends Component {
     render() {
         return (
-            <div>
-                <h1>Header</h1>
+            <div style={{marginBottom: 100}}>
                 <Query query={IS_LOGGED_IN}>
                     {({ data }) => { 
-                        return data.isLoggedIn ? <Logout /> : <Login />
+                        return ( 
+                            <div className='header'>
+                                <header>Navigation</header>
+                                <nav className='nav-items'>
+                                    <ul>
+                                        { data.isLoggedIn 
+                                            ? <Logout />
+                                            : <li><NavLink to="/login">Login</NavLink></li>
+                                        }
+                                        <li><NavLink to='/pairs'>Currency Pairs</NavLink></li>
+                                        <li><NavLink to='/settings'>Settings</NavLink></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        )
                     }} 
                 </Query>
             </div>
