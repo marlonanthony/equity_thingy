@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { NavLink } from 'react-router-dom' 
 
-import Logout from './Logout'
+import Logout from '../auth/Logout'
 import './Header.css'
 
 const IS_LOGGED_IN = gql`
@@ -19,12 +19,13 @@ export default class Header extends Component {
             <div style={{marginBottom: 100}}>
                 <Query query={IS_LOGGED_IN}>
                     {({ data }) => { 
+                        console.log(data && data)
                         return ( 
                             <div className='header'>
                                 <header>Navigation</header>
                                 <nav className='nav-items'>
                                     <ul>
-                                        { data.isLoggedIn 
+                                        { data.isLoggedIn
                                             ? <Logout />
                                             : <li><NavLink to="/login">Login</NavLink></li>
                                         }

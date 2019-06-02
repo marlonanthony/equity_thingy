@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
+
 
 const CURRENCY_PAIR_INFO = gql`
   query CurrencyPairInfo($fc: String, $tc: String) {
@@ -39,11 +40,11 @@ const BUY_PAIR = gql`
 const Landing = () => {
     const [currency, setCurrency] = useState('EUR'),
           [toCurrency, setToCurrency] = useState('USD'),
-          [bidPrice, setBidPrice] = useState(0),
+          // [bidPrice, setBidPrice] = useState(0),
           [askPrice, setAskPrice] = useState(0)
 
     return (
-        <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
+      <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
         {({ data, loading, error }) => {
             const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
@@ -53,9 +54,13 @@ const Landing = () => {
                 <div className='App'>
                 { isLoggedIn && <div className='buy_sell'>
                     { setAskPrice(+data.currencyPairInfo.askPrice) }
+                    {console.log(data)}
                     <Mutation
                     mutation={BUY_PAIR}
-                    variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}>
+                    variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
+                    update={(store, {data}) => {
+                      console.log(data)
+                    }}>
                     {(buyPair, { data, loading, error }) => {
                         if(loading) return <p>Loading</p>
                         if(error) return <p>Error</p>
@@ -66,6 +71,7 @@ const Landing = () => {
                     <p>Profit/Loss: <span>{(pL +' '+ currency)}</span></p>
                     <p>PurchasedAt: <span>{exchangeRatePurchasedAt}</span></p> */}
                     <button onClick={() => {
+                      
                     }}>Sell 
                     </button>
                 </div>}
@@ -99,18 +105,18 @@ const Landing = () => {
                     <button type='submit'>Update</button>
                     </form>
 
-                    { data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
-                    val.includes('LastRefreshed') 
+                    { data && data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
+                      val.includes('LastRefreshed') 
                         ? (
                             <div key={Math.random()} className='data'>
-                            <p className='key'>{`${val}:`}</p> 
-                            <p>{`${new Date(data.currencyPairInfo[val]).toLocaleString()}`}</p>
+                            <p className='key'>{val && `${val}:`}</p> 
+                            <p>{data.currencyPairInfo[val] && `${new Date(data.currencyPairInfo[val]).toLocaleString()}`}</p>
                             </div>
                         ) 
                         : (
                             <div key={Math.random()} className='data'>
-                            <p className='key'>{`${val}:`}</p> 
-                            <p>{`${data.currencyPairInfo[val]}`}</p>
+                            <p className='key'>{ val && `${val}:`}</p> 
+                            <p>{ data.currencyPairInfo[val] && `${data.currencyPairInfo[val]}`}</p>
                             </div>
                         )
                     ))}
@@ -119,7 +125,7 @@ const Landing = () => {
             </main>
             )
         }}
-        </Query>
+      </Query>
     )
 }
 

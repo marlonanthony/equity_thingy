@@ -1,16 +1,15 @@
-import React, { useState, Fragment } from 'react'
-import { Query, Mutation, ApolloConsumer } from 'react-apollo'
-import { Redirect, Route, Link } from 'react-router-dom'
+import React from 'react'
+import { Query } from 'react-apollo'
+import { Link } from 'react-router-dom'
 import jwt from 'jsonwebtoken'
 import keys from '../../keys_dev'
 import gql from 'graphql-tag'
 
-import Pair from '../pair/Pair'
 import './Pairs.css'
 
 const GET_USER = gql`
-  query GetUser($userId: ID!) {
-    user(id: $userId) {
+  query GetUser($id: ID!) {
+    user(id: $id) {
       email
       id
       currencyPairs {
@@ -24,14 +23,12 @@ const GET_USER = gql`
   }
 `
 
-
-
 export default function Pairs() {
     const token = localStorage.getItem('token')
     const decodedToken = token && jwt.verify(token, keys.secretOrKey)
     return (
         <div>
-            <Query query={GET_USER} variables={{ userId: decodedToken && decodedToken.id}}> 
+            <Query query={GET_USER} variables={{ id: decodedToken && decodedToken.id}}> 
             {({ data, loading, error }) => {
                 if (loading) return <h1>Loading...</h1>
                 if(error) return <h1>Error</h1>
@@ -55,7 +52,8 @@ export default function Pairs() {
                     )}
                 </div>
                 )
-            }}</Query>
+            }}
+            </Query>
         </div>
     )
 }

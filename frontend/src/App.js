@@ -1,14 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Route, Switch,  } from 'react-router-dom'
 
-import Header from './components/Header'
+import Header from './components/header/Header'
 import Landing from './components/Landing'
 import Pairs from './components/pairs/Pairs'
 import Pair from './components/pair/Pair'
-import Login from './components/Login'
+import Login from './components/auth/Login'
 import './App.css'
 
-const App = (props) => {
+const App = () => {
   
   return (
     <BrowserRouter>

@@ -16,10 +16,13 @@ const server = new ApolloServer({
         userAPI: new UserAPI() 
     }),
     context: async ({ req }) => {
-        const auth = (req.headers && req.headers.authorization) || ''
-        const decodedToken = jwt.decode(auth, keys.secretOrKey) || ''
-        const user = await User.findById(decodedToken.id)
-        return { user }
+        try {
+            const auth = await (req.headers && req.headers.authorization) || ''
+            const decodedToken = await jwt.verify(auth, keys.secretOrKey) || ''
+            const user = await User.findById(decodedToken.id)
+            console.log(decodedToken)
+            return { user }
+        } catch (err) { console.log(err) }
     },
 })
 

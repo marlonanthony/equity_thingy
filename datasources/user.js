@@ -48,7 +48,7 @@ class UserAPI extends DataSource {
       const token = await jwt.sign({ id: user.id, email, name: user.name }, keys.secretOrKey, {
           expiresIn: '1h' 
       })
-      return { userId: user.id, token, tokenExpiration: 1 }
+      return { id: user.id, token, tokenExpiration: 1 }
     } 
     catch (err) { throw err }
   }
