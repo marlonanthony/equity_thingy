@@ -13,9 +13,8 @@ class UserAPI extends DataSource {
   }
 
   async willSendRequest(request) {
-    request.headers.set('Authorization', this.context.auth)
+    request.headers.set('authorization', this.context.auth)
     console.log(this.context.auth)
-
   }
 
   initialize(config) {

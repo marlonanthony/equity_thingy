@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Query, Mutation } from 'react-apollo'
+import {withRouter, Link, Redirect} from 'react-router-dom'
 import gql from 'graphql-tag'
 
 
@@ -37,10 +38,10 @@ const BUY_PAIR = gql`
   }
 `
 
-const Landing = () => {
+const Landing = (props) => {
     const [currency, setCurrency] = useState('EUR'),
           [toCurrency, setToCurrency] = useState('USD'),
-          // [bidPrice, setBidPrice] = useState(0),
+          [bidPrice, setBidPrice] = useState(0),
           [askPrice, setAskPrice] = useState(0)
 
     return (
@@ -58,9 +59,7 @@ const Landing = () => {
                     <Mutation
                     mutation={BUY_PAIR}
                     variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
-                    update={(store, {data}) => {
-                      console.log(data)
-                    }}>
+                    onCompleted={() => props.history.push('/pairs')}>
                     {(buyPair, { data, loading, error }) => {
                         if(loading) return <p>Loading</p>
                         if(error) return <p>Error</p>
