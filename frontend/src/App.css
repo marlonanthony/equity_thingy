@@ -8,6 +8,7 @@ button {
   cursor: pointer; 
   background: var(--secondary-color); 
   color: white;  
+  border-radius: 3px;
 }
 
 .App {}

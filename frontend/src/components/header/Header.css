@@ -10,6 +10,10 @@
     justify-content: space-between;
     align-items: center;
 }
+.header header a {
+    text-decoration: none;
+    color: var(--text-color);
+}
 
 .nav-items {
     margin-left: 1.5rem;
@@ -38,6 +42,7 @@
 .nav-items a:active,
 .nav-items li:hover,
 .nav-items li:active,
-.nav-items a.active {
+.nav-items a.active,
+.header header a:hover {
     color: black;
 }

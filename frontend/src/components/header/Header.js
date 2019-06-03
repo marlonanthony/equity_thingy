@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { NavLink } from 'react-router-dom' 
@@ -20,7 +20,7 @@ const Header = () => {
       {({ data }) => { 
         return ( 
           <div className='header'>
-            <header>Currency Exchange</header>
+            <header><NavLink exact to='/'>Currency Exchange</NavLink></header>
             <nav className='nav-items'>
               <ul>
                 <li><NavLink exact to='/'>Home</NavLink></li>

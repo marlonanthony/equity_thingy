@@ -36,15 +36,14 @@
     padding: 10px;
     margin: 10px;
     min-width: 250px;
-    background: black;
-    border: 1px solid var(--secondary-color);
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
 }
 .my_currency_pairs:active,
 .my_currency_pairs:hover {
     border: 1px solid var(--secondary-color);
     cursor: pointer;
 }
-
 .my_currency_pairs a p span {
     color: var(--secondary-color);
 }

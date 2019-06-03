@@ -1,8 +1,6 @@
 import React from 'react'
 import gql from 'graphql-tag' 
 import { Query, Mutation } from 'react-apollo'
-import jwt from 'jsonwebtoken'
-import keys from '../../keys_dev'
 
 const CURRENCY_PAIR_INFO = gql`
   query CurrencyPairInfo($fc: String!, $tc: String!) {
