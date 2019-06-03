@@ -42,10 +42,7 @@ const SELL_PAIR = gql`
 export default function Pair(props) {
     const { lotSize, pair, purchasedAt, id } = props.location.state.pair,
           currency = pair.split('/')[0],
-          toCurrency = pair.split('/')[1],
-          token = localStorage.getItem('token'),
-          decodedToken = token && jwt.verify(token, keys.secretOrKey)
-    console.log(props.location.state.pair)
+          toCurrency = pair.split('/')[1]
           
     return (
         <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}>

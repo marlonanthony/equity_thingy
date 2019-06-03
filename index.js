@@ -20,7 +20,6 @@ const server = new ApolloServer({
             const auth = await (req.headers && req.headers.authorization) || ''
             const decodedToken = await jwt.verify(auth, keys.secretOrKey) || ''
             const user = await User.findById(decodedToken.id)
-            console.log(decodedToken)
             return { user }
         } catch (err) { console.log(err) }
     },

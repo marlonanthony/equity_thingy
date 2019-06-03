@@ -77,7 +77,6 @@ class UserAPI extends DataSource {
   async closePosition({ id, soldAt, user }) {
     try {
       const pair = await Pair.findById(id)
-      console.log(id)
       const pipDifFloat = (soldAt - pair.purchasedAt).toFixed(4)
       pair.soldAt = soldAt
       pair.pipDif = pipDifFloat 
