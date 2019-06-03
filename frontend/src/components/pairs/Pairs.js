@@ -33,6 +33,7 @@ export default function Pairs() {
             {({ data, loading, error }) => {
                 if (loading) return <h1>Loading...</h1>
                 if(error) return <h1>Error</h1>
+                console.log(data.user)
                 return (
                 <div className='my_currency_pairs_container'>
                     <h1>Currency Pairs</h1>

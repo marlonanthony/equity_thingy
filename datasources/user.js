@@ -77,13 +77,13 @@ class UserAPI extends DataSource {
   async closePosition({ id, soldAt, user }) {
     try {
       const pair = await Pair.findById(id)
+      console.log(id)
       const pipDifFloat = (soldAt - pair.purchasedAt).toFixed(4)
       pair.soldAt = soldAt
       pair.pipDif = pipDifFloat 
       pair.profitLoss = pipDifFloat * pair.lotSize
       pair.open = false 
       const savedPair = await pair.save()
-      // const user = await User.findById(savedPair.user)
       user.bankroll += savedPair.profitLoss
       await user.save()
 
@@ -91,7 +91,7 @@ class UserAPI extends DataSource {
             message = `${user.name} you've sold ${savedPair.pair} for a profit/loss of ${savedPair.profitLoss}.`
       return { success, message, currencyPair: savedPair }
     } 
-    catch (err) { throw err }
+    catch (err) { console.log(err) }
   }
 }
 

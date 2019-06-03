@@ -40,7 +40,7 @@ const BUY_PAIR = gql`
 const Landing = (props) => {
     const [currency, setCurrency] = useState('EUR'),
           [toCurrency, setToCurrency] = useState('USD'),
-          [bidPrice, setBidPrice] = useState(0),
+          // [bidPrice, setBidPrice] = useState(0),
           [askPrice, setAskPrice] = useState(0)
 
     return (

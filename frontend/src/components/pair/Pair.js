@@ -1,9 +1,11 @@
 import React from 'react'
 import gql from 'graphql-tag' 
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
+import jwt from 'jsonwebtoken'
+import keys from '../../keys_dev'
 
 const CURRENCY_PAIR_INFO = gql`
-  query CurrencyPairInfo($fc: String, $tc: String) {
+  query CurrencyPairInfo($fc: String!, $tc: String!) {
     isLoggedIn @client
     currencyPairInfo(tc: $tc, fc: $fc) {
       fromCurrency 
@@ -19,10 +21,32 @@ const CURRENCY_PAIR_INFO = gql`
   }
 `
 
+const SELL_PAIR = gql`
+    mutation SellPair($id: ID!, $soldAt: Float!) {
+        sellPair(id: $id, soldAt: $soldAt) {
+            success
+            message
+            currencyPair {
+                id
+                purchasedAt
+                soldAt
+                pipDif
+                profitLoss
+                updatedAt
+                open
+            }
+        }
+    }
+`
+
 export default function Pair(props) {
-    const { lotSize, pair, purchasedAt, createdAt } = props.location.state.pair,
+    const { lotSize, pair, purchasedAt, id } = props.location.state.pair,
           currency = pair.split('/')[0],
-          toCurrency = pair.split('/')[1]
+          toCurrency = pair.split('/')[1],
+          token = localStorage.getItem('token'),
+          decodedToken = token && jwt.verify(token, keys.secretOrKey)
+    console.log(props.location.state.pair)
+          
     return (
         <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}>
             {({ data, loading, error }) => {
@@ -41,6 +65,23 @@ export default function Pair(props) {
                         <p>Current bid price: { Number(bidPrice).toFixed(4) }</p>
                         <p>Current pip difference: { pipDif }</p>
                         <p>Potential profilt/loss: { Math.round(pipDif * lotSize) + '.00' }</p>
+                        <Mutation
+                            mutation={SELL_PAIR}
+                            variables={{ id, soldAt: +bidPrice }}>
+                            {(sellPair, { data, loading, error }) => {
+                                if(loading) return <h1>Loading...</h1>
+                                if(error) console.log(error) 
+                                console.log(data)
+                                return (
+                                    <div>
+                                        <button onClick={sellPair}>Sell</button>
+                                        <p>{ data && data.sellPair.success && 'Success: True' }</p>
+                                        <p>{ data && data.sellPair.message && data.sellPair.message }</p>
+                                        { data && data.sellPair.currencyPair && <p>Sold At: { data.sellPair.currencyPair.soldAt }</p> }
+                                    </div>
+                                )
+                            }}
+                        </Mutation>
                     </div>
                 )
             }} 
