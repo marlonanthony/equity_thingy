@@ -19,19 +19,17 @@ export default class Header extends Component {
             <div style={{marginBottom: 100}}>
                 <Query query={IS_LOGGED_IN}>
                     {({ data }) => { 
-                        console.log(data && data)
                         return ( 
                             <div className='header'>
-                                <header>Navigation</header>
+                                <header>Currency Exchange</header>
                                 <nav className='nav-items'>
                                     <ul>
+                                        <li><NavLink exact to='/'>Home</NavLink></li>
+                                        <li><NavLink exact to='/pairs'>Currency Pairs</NavLink></li>
                                         { data.isLoggedIn
                                             ? <Logout />
-                                            : <li><NavLink to="/login">Login</NavLink></li>
+                                            : <li><NavLink exact to="/login">Login</NavLink></li>
                                         }
-                                        <li><NavLink to='/'>Home</NavLink></li>
-                                        <li><NavLink to='/pairs'>Currency Pairs</NavLink></li>
-                                        <li><NavLink to='/settings'>Settings</NavLink></li>
                                     </ul>
                                 </nav>
                             </div>

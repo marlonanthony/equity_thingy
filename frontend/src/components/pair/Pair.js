@@ -33,14 +33,14 @@ export default function Pair(props) {
                 
                 return (
                     <div style={{ textAlign: 'center' }}>
-                        <p>Lot size: { lotSize }</p>
+                        <p>Lot size: { lotSize.toLocaleString() + '.00' }</p>
                         <p>Currency pair: { pair }</p>
                         <p>Purchased price: { purchasedAt }</p>
                         <br />
                         <p>Last Refreshed: { new Date(lastRefreshed).toLocaleTimeString() }</p>
                         <p>Current bid price: { Number(bidPrice).toFixed(4) }</p>
                         <p>Current pip difference: { pipDif }</p>
-                        <p>Potential profilt/loss: { pipDif * lotSize }</p>
+                        <p>Potential profilt/loss: { Math.round(pipDif * lotSize) + '.00' }</p>
                     </div>
                 )
             }} 

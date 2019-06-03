@@ -42,7 +42,7 @@ export default function Pairs() {
                             <div key={cPair.id} className='my_currency_pairs'>
                                 <Link to={{ pathname: '/pair', state: { pair: cPair } }}>
                                     <p><span style={{ color: 'var(--secondary-color)' }}>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
-                                    <p><span style={{ color: 'var(--secondary-color)' }}>Lot Size: </span>{cPair.lotSize && cPair.lotSize}</p>
+                                    <p><span style={{ color: 'var(--secondary-color)' }}>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
                                     <p><span style={{ color: 'var(--secondary-color)' }}>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
                                     <p><span style={{ color: 'var(--secondary-color)' }}>Open: </span>{cPair.open ? 'true' : 'false'}</p>
                                 </Link>
