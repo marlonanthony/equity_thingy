@@ -1,5 +1,14 @@
 .my_currency_pairs_container {
-    /* margin-bottom: 200px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.openpositionwrapper {
+    max-width: 50%;
+}
+.closedpositionwrapper {
+    max-width: 50%;
 }
 
 .my_currency_pairs_wrapper {

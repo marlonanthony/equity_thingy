@@ -35,22 +35,45 @@ export default function Pairs() {
                 if(error) return <h1>Error</h1>
                 console.log(data.user)
                 return (
-                <div className='my_currency_pairs_container'>
+                <div>
                     <h1>Currency Pairs</h1>
-                    {data && data.user && (
-                    <div className='my_currency_pairs_wrapper'>
-                        { data.user.currencyPairs.map(cPair => ( cPair.open && 
-                            <div key={cPair.id} className='my_currency_pairs'>
-                                <Link to={{ pathname: '/pair', state: { pair: cPair } }}>
-                                    <p><span style={{ color: 'var(--secondary-color)' }}>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
-                                    <p><span style={{ color: 'var(--secondary-color)' }}>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
-                                    <p><span style={{ color: 'var(--secondary-color)' }}>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
-                                    <p><span style={{ color: 'var(--secondary-color)' }}>Open: </span>{cPair.open ? 'true' : 'false'}</p>
-                                </Link>
+                    <div className='my_currency_pairs_container'>
+                        
+                        {data && data.user && (
+                        <div className='openpositionwrapper'>
+                            <h4 style={{textAlign: 'center'}}>Open positions</h4>
+                            <div className='my_currency_pairs_wrapper'>
+                            { data.user.currencyPairs.map(cPair => ( cPair.open &&
+                                <div key={cPair.id} className='my_currency_pairs'>
+                                    <Link to={{ pathname: '/pair', state: { pair: cPair } }}>
+                                        <p><span style={{ color: 'var(--secondary-color)' }}>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
+                                        <p><span style={{ color: 'var(--secondary-color)' }}>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
+                                        <p><span style={{ color: 'var(--secondary-color)' }}>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
+                                        <p><span style={{ color: 'var(--secondary-color)' }}>Open: </span>{cPair.open ? 'true' : 'false'}</p>
+                                    </Link>
+                                </div> 
+                            ))}
                             </div>
-                        ))}
+                        </div>
+                        )}
+                        {data && data.user && (
+                        <div className='closedpositionwrapper'>
+                            <h4 style={{textAlign: 'center'}}>Closed positions</h4>
+                            <div className='my_currency_pairs_wrapper'>
+                                { data.user.currencyPairs.map(cPair => ( !cPair.open &&
+                                    <div key={cPair.id} className='my_currency_pairs'>
+                                        <Link to={{ pathname: '/pair', state: { pair: cPair } }}>
+                                            <p><span style={{ color: 'var(--secondary-color)' }}>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
+                                            <p><span style={{ color: 'var(--secondary-color)' }}>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
+                                            <p><span style={{ color: 'var(--secondary-color)' }}>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
+                                            <p><span style={{ color: 'var(--secondary-color)' }}>Open: </span>{cPair.open ? 'true' : 'false'}</p>
+                                        </Link>
+                                    </div> 
+                                ))}
+                            </div>
+                        </div>
+                        )}
                     </div>
-                    )}
                 </div>
                 )
             }}
