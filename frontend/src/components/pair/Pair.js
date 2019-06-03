@@ -20,7 +20,7 @@ const CURRENCY_PAIR_INFO = gql`
 `
 
 export default function Pair(props) {
-    const { lotSize, pair, purchasedAt } = props.location.state.pair,
+    const { lotSize, pair, purchasedAt, createdAt } = props.location.state.pair,
           currency = pair.split('/')[0],
           toCurrency = pair.split('/')[1]
     return (

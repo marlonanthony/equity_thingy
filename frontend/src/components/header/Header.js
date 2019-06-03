@@ -29,6 +29,7 @@ export default class Header extends Component {
                                             ? <Logout />
                                             : <li><NavLink to="/login">Login</NavLink></li>
                                         }
+                                        <li><NavLink to='/'>Home</NavLink></li>
                                         <li><NavLink to='/pairs'>Currency Pairs</NavLink></li>
                                         <li><NavLink to='/settings'>Settings</NavLink></li>
                                     </ul>

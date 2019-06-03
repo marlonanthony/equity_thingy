@@ -52,73 +52,60 @@ const Landing = (props) => {
             return  data && data.currencyPairInfo && (
             <main className='container'>
                 <div className='App'>
-                { isLoggedIn && <div className='buy_sell'>
-                    { setAskPrice(+data.currencyPairInfo.askPrice) }
-                    {console.log(data)}
-                    <Mutation
-                      mutation={BUY_PAIR}
-                      variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
-                      onCompleted={() => props.history.push('/pairs')}>
-                      {(buyPair, { data, loading, error }) => {
-                          if(loading) return <p>Loading</p>
-                          if(error) return <p>Error</p>
-                          return buyPair && <button onClick={buyPair}>Buy</button>
-                      }}
-                    </Mutation>
-                    {/* <p>PipDif: <span>{pipDif}</span></p>
-                    <p>Profit/Loss: <span>{(pL +' '+ currency)}</span></p>
-                    <p>PurchasedAt: <span>{exchangeRatePurchasedAt}</span></p> */}
-                    <button onClick={() => {
-                      
-                    }}>Sell 
-                    </button>
-                </div>}
-                <section className='exchange_details'>
-                    <h1>Currency Exchange</h1>
-                    <form onSubmit={(e) => {
-                    e.preventDefault() 
-                    }}> 
-                    <input 
-                        placeholder={currency} 
-                        name='currency' 
-                        value={currency} 
-                        // onChange={e => setCurrency(e.target.value)}
-                        readOnly
-                    />
-                    <input 
-                        placeholder='To' 
-                        // onChange={e => setToCurrency(e.target.value)}
-                        name='toCurrency' 
-                        value={toCurrency} 
-                        readOnly
-                    />
-                    <select 
-                        onChange={e => setToCurrency(e.target.value)}
-                        name='toCurrency'
-                        value={toCurrency}
-                    >
-                        <option>USD</option>
-                        <option>GBP</option>
-                    </select>
-                    <button type='submit'>Update</button>
-                    </form>
-
-                    { data && data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
-                      val.includes('LastRefreshed') 
-                        ? (
-                            <div key={Math.random()} className='data'>
-                            <p className='key'>{val && `${val}:`}</p> 
-                            <p>{data.currencyPairInfo[val] && `${new Date(data.currencyPairInfo[val]).toLocaleString()}`}</p>
-                            </div>
-                        ) 
-                        : (
-                            <div key={Math.random()} className='data'>
-                            <p className='key'>{ val && `${val}:`}</p> 
-                            <p>{ data.currencyPairInfo[val] && `${data.currencyPairInfo[val]}`}</p>
-                            </div>
-                        )
-                    ))}
-                </section>
+                  <section className='exchange_details'>
+                      <h1>Currency Exchange</h1>
+                      <form onSubmit={(e) => {
+                        e.preventDefault() 
+                      }}> 
+                      <input 
+                          placeholder={currency} 
+                          name='currency' 
+                          value={currency} 
+                          readOnly
+                      />
+                      <input 
+                          placeholder='To' 
+                          name='toCurrency' 
+                          value={toCurrency} 
+                          readOnly
+                      />
+                      <select 
+                          onChange={e => setToCurrency(e.target.value)}
+                          name='toCurrency'
+                          value={toCurrency}
+                      >
+                          <option>USD</option>
+                          <option>GBP</option>
+                      </select>
+                      { setAskPrice(+data.currencyPairInfo.askPrice) }
+                      { isLoggedIn && 
+                      <Mutation
+                        mutation={BUY_PAIR}
+                        variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
+                        onCompleted={() => props.history.push('/pairs')}>
+                        {(buyPair, { data, loading, error }) => {
+                            if(loading) return <p>Loading</p>
+                            if(error) return <p>Error</p>
+                            return buyPair && <button onClick={buyPair}>Buy</button>
+                        }}
+                      </Mutation> }
+                      </form>
+                      { data && data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
+                        val.includes('LastRefreshed') 
+                          ? (
+                              <div key={Math.random()} className='data'>
+                                <p className='key'>{val && `${val}:`}</p> 
+                                <p>{data.currencyPairInfo[val] && `${new Date(data.currencyPairInfo[val]).toLocaleString()}`}</p>
+                              </div>
+                          ) 
+                          : (
+                              <div key={Math.random()} className='data'>
+                                <p className='key'>{ val && `${val}:`}</p> 
+                                <p>{ data.currencyPairInfo[val] && `${data.currencyPairInfo[val]}`}</p>
+                              </div>
+                          )
+                      ))}
+                  </section>
                 </div>
             </main>
             )
