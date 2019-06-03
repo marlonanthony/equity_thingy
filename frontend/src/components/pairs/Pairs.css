@@ -6,27 +6,46 @@
 
 .openpositionwrapper {
     max-width: 50%;
+    margin-left: 25%;
 }
 .closedpositionwrapper {
     max-width: 50%;
+    margin-left: 25%;
 }
+
+.positioninfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.positioninfo h4,
+.positioninfo button {
+    margin: 0 10px;
+}
+.positioninfo h4 { color: var(--text-color);}
+
 
 .my_currency_pairs_wrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
 .my_currency_pairs {
-    border: 1px solid white;
     padding: 10px;
     margin: 10px;
     min-width: 250px;
+    background: black;
+    border: 1px solid var(--secondary-color);
 }
 .my_currency_pairs:active,
 .my_currency_pairs:hover {
-    background: rgba(0,0,0,0.5);
     border: 1px solid var(--secondary-color);
     cursor: pointer;
 }
+
+.my_currency_pairs a p span {
+    color: var(--secondary-color);
+}
+.my_currency_pairs a p:hover { color: rgba(225,225,225,0.5); }

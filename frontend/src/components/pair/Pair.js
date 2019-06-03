@@ -68,7 +68,6 @@ export default function Pair(props) {
                             {(sellPair, { data, loading, error }) => {
                                 if(loading) return <h1>Loading...</h1>
                                 if(error) console.log(error) 
-                                console.log(data)
                                 return (
                                     <div>
                                         <button onClick={sellPair}>Sell</button>
