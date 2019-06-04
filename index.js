@@ -17,8 +17,8 @@ const server = new ApolloServer({
     }),
     context: async ({ req }) => {
         try {
-            const auth = await (req.headers && req.headers.authorization) || ''
-            const decodedToken = await jwt.verify(auth, keys.secretOrKey) || ''
+            const token = await (req.headers && req.headers.authorization) || ''
+            const decodedToken = await jwt.verify(token, keys.secretOrKey) || ''
             const user = await User.findById(decodedToken.id)
             return { user }
         } catch (err) { console.log(err) }

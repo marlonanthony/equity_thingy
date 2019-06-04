@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { NavLink } from 'react-router-dom' 
 
-import Logout from '../auth/Logout'
+import Logout from '../auth/logout/Logout'
 import './Header.css'
 
 const IS_LOGGED_IN = gql`

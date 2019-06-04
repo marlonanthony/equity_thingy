@@ -35,4 +35,4 @@ ReactDOM.render(
     <ApolloProvider client={client}>
         <App />
     </ApolloProvider>, document.getElementById('root')
-);
+)

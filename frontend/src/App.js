@@ -5,7 +5,7 @@ import Header from './components/header/Header'
 import Landing from './components/Landing'
 import Pairs from './components/pairs/Pairs'
 import Pair from './components/pair/Pair'
-import Login from './components/auth/Login'
+import Login from './components/auth/login/Login'
 import Signup from './components/auth/signup/Signup'
 import './App.css'
 

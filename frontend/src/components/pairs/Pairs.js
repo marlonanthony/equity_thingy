@@ -12,6 +12,7 @@ const GET_USER = gql`
     user(id: $id) {
       email
       id
+      bankroll
       currencyPairs {
           id
           pair
@@ -45,8 +46,11 @@ export default function Pairs() {
                             ? (
                                 <div className='openpositionwrapper'>
                                     <div className='positioninfo'>
-                                        <h4>Open positions</h4>
-                                        <button onClick={() => setOpen(false)}>closed</button>
+                                        <p><span>Bankroll </span>{data && data.user && data.user.bankroll && data.user.bankroll.toLocaleString() + '.00'}</p>
+                                        <div className='positioninfo'>
+                                            <h4>Open positions</h4>
+                                            <i className="far fa-folder-open" onClick={() => setOpen(false)} />
+                                        </div>
                                     </div>
                                     <div className='my_currency_pairs_wrapper'>
                                     { data.user.currencyPairs.map(cPair => ( cPair.open &&
@@ -66,8 +70,11 @@ export default function Pairs() {
                             : (
                                 <div className='closedpositionwrapper'>
                                     <div className='positioninfo'>
-                                        <h4>Closed positions</h4>
-                                        <button onClick={() => setOpen(true)}>open</button>
+                                        <p><span>Bankroll </span>{data && data.user && data.user.bankroll && data.user.bankroll.toLocaleString() + '.00'}</p>
+                                        <div className='positioninfo'>
+                                            <h4>Closed positions</h4>
+                                            <i class="far fa-folder" onClick={() => setOpen(true)}/>
+                                        </div>
                                     </div>
                                     <div className='my_currency_pairs_wrapper'>
                                         { data.user.currencyPairs.map(cPair => ( !cPair.open &&

@@ -15,15 +15,17 @@
 
 .positioninfo {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 .positioninfo h4,
-.positioninfo button {
-    margin: 0 10px;
+.positioninfo i {
+    margin: 0 5px;
 }
+.positioninfo p span { color: var(--secondary-color); }
 .positioninfo h4 { color: var(--text-color);}
-
+.positioninfo h4:hover { color: rgba(245,245,245,0.7); }
+.positioninfo i { color: var(--secondary-color); cursor: pointer; }
 
 .my_currency_pairs_wrapper {
     display: flex;
