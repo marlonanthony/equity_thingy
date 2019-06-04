@@ -6,6 +6,7 @@ import Landing from './components/Landing'
 import Pairs from './components/pairs/Pairs'
 import Pair from './components/pair/Pair'
 import Login from './components/auth/Login'
+import Signup from './components/auth/signup/Signup'
 import './App.css'
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
           <Route exact path='/' component={Landing} />
           <Route exact path='/pairs' render={() => <Pairs />} />
           <Route exact path='/login' component={Login} />
+          <Route exact path='/signup' component={Signup} />
           <Route exact path='/pair' component={Pair} />
         </Switch>
     </BrowserRouter>

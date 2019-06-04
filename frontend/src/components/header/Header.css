@@ -21,6 +21,7 @@
 
 .nav-items ul {
     display: flex;
+    align-items: center;
     margin: 0 0 0 1.5rem;
     padding: 0;
     list-style: none;
@@ -43,6 +44,7 @@
 .nav-items li:hover,
 .nav-items li:active,
 .nav-items a.active,
-.header header a:hover {
+.header header a:hover,
+.header header a.active {
     color: black;
 }

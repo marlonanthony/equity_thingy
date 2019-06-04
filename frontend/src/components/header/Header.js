@@ -27,7 +27,12 @@ const Header = () => {
                 { data.isLoggedIn && <li><NavLink exact to='/pairs'>Currency Pairs</NavLink></li> }
                 { data.isLoggedIn
                   ? <Logout />
-                  : <li><NavLink exact to="/login">Login</NavLink></li>
+                  : (
+                    <React.Fragment>
+                      <li><NavLink exact to="/login">Login</NavLink></li>
+                      <li><NavLink exact to='/signup'>Sign Up</NavLink></li>
+                    </React.Fragment>
+                  )
                 }
               </ul>
             </nav>
