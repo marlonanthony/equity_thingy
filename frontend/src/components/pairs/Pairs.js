@@ -49,7 +49,7 @@ export default function Pairs() {
                                         <p><span>Bankroll </span>{data && data.user && data.user.bankroll && data.user.bankroll.toLocaleString() + '.00'}</p>
                                         <div className='positioninfo'>
                                             <h4>Open positions</h4>
-                                            <i className="far fa-folder-open" onClick={() => setOpen(false)} />
+                                            <i className="far fa-folder-open" title='closed positions' onClick={() => setOpen(false)} />
                                         </div>
                                     </div>
                                     <div className='my_currency_pairs_wrapper'>
@@ -73,7 +73,7 @@ export default function Pairs() {
                                         <p><span>Bankroll </span>{data && data.user && data.user.bankroll && data.user.bankroll.toLocaleString() + '.00'}</p>
                                         <div className='positioninfo'>
                                             <h4>Closed positions</h4>
-                                            <i class="far fa-folder" onClick={() => setOpen(true)}/>
+                                            <i class="far fa-folder" title='open positions' onClick={() => setOpen(true)}/>
                                         </div>
                                     </div>
                                     <div className='my_currency_pairs_wrapper'>

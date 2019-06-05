@@ -26,6 +26,7 @@
 .positioninfo h4 { color: var(--text-color);}
 .positioninfo h4:hover { color: rgba(245,245,245,0.7); }
 .positioninfo i { color: var(--secondary-color); cursor: pointer; }
+.positioninfo i:hover { color: rgba(55,131,194, 0.7);}
 
 .my_currency_pairs_wrapper {
     display: flex;
