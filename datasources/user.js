@@ -64,7 +64,7 @@ class UserAPI extends DataSource {
       const result = await newPair.save(),
             foundUser = await User.findById(user._id)
       if(!foundUser) throw new Error('User doesn\'t exist')
-      foundUser.currencyPairs.push(newPair)
+      foundUser.currencyPairs.unshift(newPair)
       foundUser.bankroll -= lotSize
       await foundUser.save() 
       const message = `Congrats ${foundUser.name}! You've purchased ${result.pair} at ${result.purchasedAt}`,
