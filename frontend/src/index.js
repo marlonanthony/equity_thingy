@@ -15,7 +15,7 @@ const cache = new InMemoryCache()
 const link = new HttpLink({ 
     uri: 'http://localhost:4000/graphql',
     headers: {  
-        authorization: localStorage.getItem('token')
+        authorization: localStorage.getItem('token') || ''
     } 
 })
 const client = new ApolloClient({ 
@@ -28,7 +28,7 @@ const client = new ApolloClient({
 cache.writeData({
     data: {
         isLoggedIn: !!localStorage.getItem('token'),
-        token: ''
+        token: localStorage.getItem('token') || ''
     }
 })
 

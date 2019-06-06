@@ -7,7 +7,7 @@ import gql from 'graphql-tag'
 
 import './Pairs.css'
 
-const GET_USER = gql`
+export const GET_USER = gql`
   query GetUser($id: ID!) {
     user(id: $id) {
       email
@@ -73,7 +73,7 @@ export default function Pairs() {
                                         <p><span>Bankroll </span>{data && data.user && data.user.bankroll && data.user.bankroll.toLocaleString() + '.00'}</p>
                                         <div className='positioninfo'>
                                             <h4>Closed positions</h4>
-                                            <i class="far fa-folder" title='open positions' onClick={() => setOpen(true)}/>
+                                            <i className="far fa-folder" title='open positions' onClick={() => setOpen(true)}/>
                                         </div>
                                     </div>
                                     <div className='my_currency_pairs_wrapper'>

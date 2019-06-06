@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 import Header from './components/header/Header'
@@ -12,7 +12,7 @@ import './App.css'
 const App = () => {
   
   return (
-    <React.Fragment>
+    <Fragment>
       <Header />
         <Switch>
           <Route exact path='/' component={Landing} />
@@ -21,7 +21,7 @@ const App = () => {
           <Route exact path='/signup' component={Signup} />
           <Route exact path='/pair' component={Pair} />
         </Switch>
-    </React.Fragment>
+    </Fragment>
   )
 }
 

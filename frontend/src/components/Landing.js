@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
-
+import jwt from 'jsonwebtoken'
+import keys from '../keys_dev'
+import { GET_USER } from './pairs/Pairs'
 
 const CURRENCY_PAIR_INFO = gql`
   query CurrencyPairInfo($fc: String, $tc: String) {
@@ -41,7 +43,9 @@ const Landing = (props) => {
     const [currency, setCurrency] = useState('EUR'),
           [toCurrency, setToCurrency] = useState('USD'),
           // [bidPrice, setBidPrice] = useState(0),
-          [askPrice, setAskPrice] = useState(0)
+          [askPrice, setAskPrice] = useState(0),
+          token = localStorage.getItem('token') || '',
+          decodedToken = token && jwt.verify(token, keys.secretOrKey)
 
     return (
       <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
@@ -49,6 +53,7 @@ const Landing = (props) => {
             const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
             if(error) return <h1>error</h1>
+            console.log(data)
             return  data && data.currencyPairInfo && (
             <main className='container'>
                 <div className='App'>
@@ -56,7 +61,7 @@ const Landing = (props) => {
                       <h1>Currency Exchange</h1>
                       <form onSubmit={(e) => {
                         e.preventDefault() 
-
+                        // update cache here whenever currency or toCurrency is updated
                       }}> 
                       <div className='select-container'>
                         <p>From </p>
@@ -96,12 +101,19 @@ const Landing = (props) => {
                       <Mutation
                         mutation={BUY_PAIR}
                         variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
-                        refetchQueries={[
-                          {
-                            query: CURRENCY_PAIR_INFO,
-                            variables: { fc: currency, tc: toCurrency }
-                          }
-                        ]}
+                        update={(cache , { data }) => {
+                          const { user } = cache.readQuery({ 
+                            query: GET_USER,
+                            variables: {
+                              id: decodedToken && decodedToken.id
+                            }
+                          })
+                          user.currencyPairs.unshift(data.buyPair.currencyPair)
+                          cache.writeQuery({
+                            query: GET_USER,
+                            user 
+                          })
+                        }}
                         onCompleted={() => props.history.push('/pairs')}>
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
