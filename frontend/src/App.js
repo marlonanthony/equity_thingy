@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch,  } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import Header from './components/header/Header'
 import Landing from './components/Landing'
@@ -12,7 +12,7 @@ import './App.css'
 const App = () => {
   
   return (
-    <BrowserRouter>
+    <React.Fragment>
       <Header />
         <Switch>
           <Route exact path='/' component={Landing} />
@@ -21,7 +21,7 @@ const App = () => {
           <Route exact path='/signup' component={Signup} />
           <Route exact path='/pair' component={Pair} />
         </Switch>
-    </BrowserRouter>
+    </React.Fragment>
   )
 }
 

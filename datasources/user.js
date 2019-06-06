@@ -41,9 +41,9 @@ class UserAPI extends DataSource {
   async loginUser({ email, password }) {
     try {
       const user = await User.findOne({ email })
-      if(!user) { throw new Error('User does not exist!') }
+      if(!user) { throw new Error('Email or password is incorrect!') }
       const isEqual = await bcrypt.compare(password, user.password)
-      if(!isEqual) { throw new Error('Password is incorrect') }
+      if(!isEqual) { throw new Error('Email or password is incorrect!') }
       const token = await jwt.sign({ id: user.id, email, name: user.name }, keys.secretOrKey, {
           expiresIn: '1h' 
       })
@@ -77,6 +77,7 @@ class UserAPI extends DataSource {
   async closePosition({ id, soldAt, user }) {
     try {
       const pair = await Pair.findById(id)
+      if(!pair) throw new Error('Pair not found')
       const pipDifFloat = (soldAt - pair.purchasedAt).toFixed(4)
       pair.soldAt = soldAt
       pair.pipDif = pipDifFloat 

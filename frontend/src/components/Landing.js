@@ -48,7 +48,7 @@ const Landing = (props) => {
         {({ data, loading, error }) => {
             const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
-            if(error) return <h1>Error</h1>
+            if(error) return <h1>error</h1>
             return  data && data.currencyPairInfo && (
             <main className='container'>
                 <div className='App'>
@@ -56,18 +56,24 @@ const Landing = (props) => {
                       <h1>Currency Exchange</h1>
                       <form onSubmit={(e) => {
                         e.preventDefault() 
+
                       }}> 
-                      <select 
-                        onChange={e => setCurrency(e.target.value)}
-                        name='currency'
-                        value={currency}
-                      >
-                        <option>EUR</option>
-                        <option>USD</option>
-                        <option>GBP</option>
-                        <option>NZD</option>
-                        <option>AUD</option>
-                      </select>
+                      <div className='select-container'>
+                        <p>From </p>
+                        <select 
+                          onChange={e => setCurrency(e.target.value)}
+                          name='currency'
+                          value={currency}
+                        >
+                          <option>EUR</option>
+                          <option>USD</option>
+                          <option>GBP</option>
+                          <option>NZD</option>
+                          <option>AUD</option>
+                        </select>
+                      </div>
+                      <div className='select-container'>
+                      <p>To </p>
                       <select 
                         onChange={e => setToCurrency(e.target.value)}
                         name='toCurrency'
@@ -84,11 +90,18 @@ const Landing = (props) => {
                             <option>USD</option>
                           )}
                       </select>
+                      </div>
                       { setAskPrice(+data.currencyPairInfo.askPrice) }
                       { isLoggedIn && 
                       <Mutation
                         mutation={BUY_PAIR}
                         variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
+                        refetchQueries={[
+                          {
+                            query: CURRENCY_PAIR_INFO,
+                            variables: { fc: currency, tc: toCurrency }
+                          }
+                        ]}
                         onCompleted={() => props.history.push('/pairs')}>
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
@@ -98,7 +111,8 @@ const Landing = (props) => {
                       </Mutation> }
                       </form>
                       { data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
-                        val.includes('LastRefreshed') 
+                        val === '__typename' ? null :
+                        val.includes('lastRefreshed') 
                           ? (
                             <div key={Math.random()} className='data'>
                               <p className='key'>{val && `${val}:`}</p> 
