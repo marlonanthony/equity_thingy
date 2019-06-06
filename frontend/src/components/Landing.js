@@ -53,13 +53,13 @@ const Landing = (props) => {
             const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
             if(error) return <h1>error</h1>
-            console.log(data)
             return  data && data.currencyPairInfo && (
             <main className='container'>
                 <div className='App'>
                   <section className='exchange_details'>
                       <h1>Currency Exchange</h1>
                       <form onSubmit={(e) => {
+                        console.log(data)
                         e.preventDefault() 
                         // update cache here whenever currency or toCurrency is updated
                       }}> 
@@ -101,17 +101,15 @@ const Landing = (props) => {
                       <Mutation
                         mutation={BUY_PAIR}
                         variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
-                        update={(cache , { data }) => {
+                        update={(cache , { data: { buyPair: { currencyPair } } }) => {
                           const { user } = cache.readQuery({ 
                             query: GET_USER,
-                            variables: {
-                              id: decodedToken && decodedToken.id
-                            }
+                            variables: { id: decodedToken && decodedToken.id }
                           })
-                          user.currencyPairs.unshift(data.buyPair.currencyPair)
+                          const data = user.currencyPairs.unshift(currencyPair)
                           cache.writeQuery({
                             query: GET_USER,
-                            user 
+                            data 
                           })
                         }}
                         onCompleted={() => props.history.push('/pairs')}>

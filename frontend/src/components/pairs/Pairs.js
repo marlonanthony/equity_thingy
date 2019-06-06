@@ -29,7 +29,7 @@ export const GET_USER = gql`
 `
 
 export default function Pairs() {
-    const token = localStorage.getItem('token'),
+    const token = localStorage.getItem('token') || '',
           decodedToken = token && jwt.verify(token, keys.secretOrKey),
           [open, setOpen] = useState(true) 
     return (
