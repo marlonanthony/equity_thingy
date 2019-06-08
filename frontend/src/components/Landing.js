@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import jwt from 'jsonwebtoken'
+
 import keys from '../keys_dev'
 import { GET_USER } from './pairs/Pairs'
 
@@ -39,7 +40,7 @@ const BUY_PAIR = gql`
   }
 `
 
-const Landing = (props) => {
+const Landing = props => {
     const [currency, setCurrency] = useState('EUR'),
           [toCurrency, setToCurrency] = useState('USD'),
           // [bidPrice, setBidPrice] = useState(0),
@@ -59,7 +60,6 @@ const Landing = (props) => {
                   <section className='exchange_details'>
                       <h1>Currency Exchange</h1>
                       <form onSubmit={(e) => {
-                        console.log(data)
                         e.preventDefault() 
                         // update cache here whenever currency or toCurrency is updated
                       }}> 
@@ -86,11 +86,11 @@ const Landing = (props) => {
                       >
                         { currency === 'USD' 
                           ? (
-                            <React.Fragment>
+                            <Fragment>
                               <option>JPY</option>
                               <option>CHF</option>
                               <option>CAD</option>
-                            </React.Fragment>
+                            </Fragment>
                           ) : (
                             <option>USD</option>
                           )}
@@ -106,21 +106,27 @@ const Landing = (props) => {
                             query: GET_USER,
                             variables: { id: decodedToken && decodedToken.id }
                           })
-                          const data = user.currencyPairs.unshift(currencyPair)
-                          cache.writeQuery({
-                            query: GET_USER,
-                            data 
-                          })
+                          const data = user && user.currencyPairs.unshift(currencyPair)
+                          cache.writeQuery({ query: GET_USER, data  })
                         }}
-                        onCompleted={() => props.history.push('/pairs')}>
+                        onCompleted={() => props.history.push('/pairs')}
+                        >
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
-                          if(error) return <p>Error</p>
-                          return buyPair && <button onClick={buyPair}>Buy</button>
+                          if(error) return <p>Error: { error }</p>
+                          console.log(data) 
+                          return (buyPair && 
+                            <Fragment>
+                              <button onClick={buyPair}>Buy</button>
+                              {/* <div>
+                                <p>{data && data.buyPair.message}</p>
+                              </div> */}
+                            </Fragment>
+                          )
                         }}
                       </Mutation> }
                       </form>
-                      { data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
+                      { data && data.currencyPairInfo && Object.keys(data.currencyPairInfo).map(val => (
                         val === '__typename' ? null :
                         val.includes('lastRefreshed') 
                           ? (

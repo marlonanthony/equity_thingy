@@ -25,12 +25,14 @@ const client = new ApolloClient({
     typeDefs,
 })
 
-cache.writeData({
-    data: {
-        isLoggedIn: !!localStorage.getItem('token'),
-        token: ''
-    }
-})
+const data = {
+    isLoggedIn: !!localStorage.getItem('token'),
+    token: '',
+    id: ''
+}
+
+cache.writeData({ data })
+client.onResetStore(() => cache.writeData({ data }))
 
 ReactDOM.render(
     <BrowserRouter>

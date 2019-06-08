@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { NavLink } from 'react-router-dom' 
@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom'
 import Logout from '../auth/logout/Logout'
 import './Header.css'
 
-const IS_LOGGED_IN = gql`
+export const IS_LOGGED_IN = gql`
   query IsUserLogginIn {
     isLoggedIn @client
     token @client
@@ -28,10 +28,10 @@ const Header = () => {
                 { data.isLoggedIn
                   ? <Logout />
                   : (
-                    <React.Fragment>
+                    <Fragment>
                       <li><NavLink exact to="/login">Login</NavLink></li>
                       <li><NavLink exact to='/signup'>Sign Up</NavLink></li>
-                    </React.Fragment>
+                    </Fragment>
                   )
                 }
               </ul>

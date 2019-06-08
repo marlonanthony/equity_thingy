@@ -12,10 +12,10 @@ class UserAPI extends DataSource {
     super()
   }
 
-  async willSendRequest(request) {
-    request.headers.set('authorization', this.context.auth)
-    console.log(this.context.auth)
-  }
+  // async willSendRequest(request) {
+  //   request.headers.set('authorization', this.context.auth)
+  //   console.log(this.context.auth)
+  // }
 
   initialize(config) {
     this.context = config.context
@@ -64,6 +64,7 @@ class UserAPI extends DataSource {
       const result = await newPair.save(),
             foundUser = await User.findById(user._id)
       if(!foundUser) throw new Error('User doesn\'t exist')
+      if(foundUser.bankroll < lotSize) throw new Error('You do not have enough for this transaction!')
       foundUser.currencyPairs.unshift(newPair)
       foundUser.bankroll -= lotSize
       await foundUser.save() 

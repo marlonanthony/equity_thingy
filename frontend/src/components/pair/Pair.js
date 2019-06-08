@@ -47,7 +47,7 @@ export default function Pair(props) {
             {({ data, loading, error }) => {
                 if(loading) return <h1>Loading...</h1>
                 if(error) return <h1>Error</h1>
-                const {bidPrice, lastRefreshed } = data.currencyPairInfo,
+                const { bidPrice, lastRefreshed } = data.currencyPairInfo,
                       pipDif = (bidPrice - purchasedAt).toFixed(4) 
                 
                 return (
