@@ -28,7 +28,10 @@ const client = new ApolloClient({
 const data = {
     isLoggedIn: !!localStorage.getItem('token'),
     token: '',
-    id: ''
+    id: '',
+    currencyPairInfo: {
+        __typename: "DefaultPairDisplay",
+    }
 }
 
 cache.writeData({ data })

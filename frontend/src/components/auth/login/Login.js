@@ -24,14 +24,12 @@ function Login (props) {
                     mutation={LOGIN_USER}
                     update={(cache, args) => {
                         const data = cache.readQuery({ query: IS_LOGGED_IN })
-                        console.log(args)
                         data.isLoggedIn = true
                         data.id = args.id 
                         cache.writeQuery({ query: IS_LOGGED_IN, data })
                     }}
                     onCompleted={({ login }) => {
                         localStorage.setItem('token', login.token)
-                        console.log(login)
                         client.writeData({ data: { isLoggedIn: true, token: login.token, id: login.id } })
                         props.history.push('/')
                     }}>

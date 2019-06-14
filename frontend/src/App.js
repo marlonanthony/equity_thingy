@@ -14,13 +14,13 @@ const App = () => {
   return (
     <Fragment>
       <Header />
-        <Switch>
-          <Route exact path='/' component={Landing} />
-          <Route exact path='/pairs' render={() => <Pairs />} />
-          <Route exact path='/login' component={Login} />
-          <Route exact path='/signup' component={Signup} />
-          <Route exact path='/pair' component={Pair} />
-        </Switch>
+      <Switch>
+        <Route exact path='/' component={Landing} />
+        <Route exact path='/pairs' render={() => <Pairs />} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/signup' component={Signup} />
+        <Route exact path='/pair' component={Pair} />
+      </Switch>
     </Fragment>
   )
 }

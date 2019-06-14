@@ -34,6 +34,8 @@ class UserAPI extends DataSource {
           password: hashedPassword
       })
       const res = await user.save()
+      this.context.user = res 
+      console.log(this.context)
       return { id: res._id, name, email }
     } catch (err) { throw err }
   }

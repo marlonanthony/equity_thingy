@@ -51,6 +51,7 @@ const Landing = props => {
     return (
       <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
         {({ data, loading, error }) => {
+          console.log(data)
             const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
             if(error) return <h1>error</h1>
@@ -114,7 +115,7 @@ const Landing = props => {
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
                           if(error) return <p>Error: { error }</p>
-                          console.log(data) 
+                          // console.log(data) 
                           return (buyPair && 
                             <Fragment>
                               <button onClick={buyPair}>Buy</button>
