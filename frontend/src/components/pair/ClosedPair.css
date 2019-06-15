@@ -1,0 +1,6 @@
+.closed_pair {
+    width: 300px;
+    margin-left: calc(50% - 150px);
+}
+
+.closed_pair p span { color: var(--secondary-color); }

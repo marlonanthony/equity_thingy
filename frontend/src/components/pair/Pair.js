@@ -46,7 +46,7 @@ export default function Pair(props) {
         <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}>
             {({ data, loading, error }) => {
                 if(loading) return <h1>Loading...</h1>
-                if(error) return <h1>Error</h1>
+                if(error) return `Error ${error}`
                 const { bidPrice, lastRefreshed } = data.currencyPairInfo,
                       pipDif = (bidPrice - purchasedAt).toFixed(4) 
                 

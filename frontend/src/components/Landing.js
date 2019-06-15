@@ -49,12 +49,11 @@ const Landing = props => {
           decodedToken = token && jwt.verify(token, keys.secretOrKey)
 
     return (
-      <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}> 
+      <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }} errorPolicy='all'> 
         {({ data, loading, error }) => {
-          console.log(data)
-            const isLoggedIn = data && data.isLoggedIn
             if (loading) return <h1>Loading...</h1>
-            if(error) return <h1>error</h1>
+            if(error) return `Error ${error}`
+            const isLoggedIn = data && data.isLoggedIn
             return  data && data.currencyPairInfo && (
             <main className='container'>
                 <div className='App'>
@@ -67,7 +66,7 @@ const Landing = props => {
                       <div className='select-container'>
                         <p>From </p>
                         <select 
-                          onChange={e => setCurrency(e.target.value)}
+                          onChange={e => setCurrency(e.target.value) }
                           name='currency'
                           value={currency}
                         >
@@ -81,7 +80,7 @@ const Landing = props => {
                       <div className='select-container'>
                       <p>To </p>
                       <select 
-                        onChange={e => setToCurrency(e.target.value)}
+                        onChange={e => setToCurrency(e.target.value) }
                         name='toCurrency'
                         value={toCurrency}
                       >
@@ -114,7 +113,10 @@ const Landing = props => {
                         >
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
-                          if(error) return <p>Error: { error }</p>
+                          if(error) {
+                            console.log(error) 
+                            return <p>Error: { error.message }</p>
+                          }
                           // console.log(data) 
                           return (buyPair && 
                             <Fragment>

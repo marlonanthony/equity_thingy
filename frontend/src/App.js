@@ -5,6 +5,7 @@ import Header from './components/header/Header'
 import Landing from './components/Landing'
 import Pairs from './components/pairs/Pairs'
 import Pair from './components/pair/Pair'
+import ClosedPair from './components/pair/ClosedPair'
 import Login from './components/auth/login/Login'
 import Signup from './components/auth/signup/Signup'
 import './App.css'
@@ -20,6 +21,7 @@ const App = () => {
         <Route exact path='/login' component={Login} />
         <Route exact path='/signup' component={Signup} />
         <Route exact path='/pair' component={Pair} />
+        <Route exact path='/closedpair' component={ClosedPair} />
       </Switch>
     </Fragment>
   )

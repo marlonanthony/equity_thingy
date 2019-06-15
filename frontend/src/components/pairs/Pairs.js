@@ -37,7 +37,7 @@ export default function Pairs() {
             <Query query={GET_USER} variables={{ id: decodedToken && decodedToken.id}}> 
             {({ data, loading, error }) => {
                 if (loading) return <h1>Loading...</h1>
-                if(error) return <h1>Error</h1>
+                if(error) return `Error ${error}`
                 return (
                 <div>
                     <h1>Currency Pairs</h1>
@@ -79,7 +79,7 @@ export default function Pairs() {
                                     <div className='my_currency_pairs_wrapper'>
                                         { data.user.currencyPairs.map(cPair => ( !cPair.open &&
                                             <div key={cPair.id} className='my_currency_pairs'>
-                                                <Link to={{ pathname: '/pair', state: { pair: cPair } }}>
+                                                <Link to={{ pathname: '/closedpair', state: { pair: cPair } }}>
                                                     <p><span>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
                                                     <p><span>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
                                                     <p><span>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
