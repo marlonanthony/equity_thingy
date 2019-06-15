@@ -50,7 +50,7 @@ const Landing = props => {
 
     return (
       <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }} errorPolicy='all'> 
-        {({ data, loading, error }) => {
+        {({ data, loading, error, refetch }) => {
             if (loading) return <h1>Loading...</h1>
             if(error) return `Error ${error}`
             const isLoggedIn = data && data.isLoggedIn
@@ -97,6 +97,7 @@ const Landing = props => {
                       </select>
                       </div>
                       { setAskPrice(+data.currencyPairInfo.askPrice) }
+                      <button onClick={() => refetch()}>Refresh</button>
                       { isLoggedIn && 
                       <Mutation
                         mutation={BUY_PAIR}
@@ -114,10 +115,9 @@ const Landing = props => {
                         {(buyPair, { data, loading, error }) => {
                           if(loading) return <p>Loading</p>
                           if(error) {
-                            console.log(error) 
-                            return <p>Error: { error.message }</p>
+                            console.log(error)  
+                            return <small style={{color: 'white'}}>Error: { error.message }</small>
                           }
-                          // console.log(data) 
                           return (buyPair && 
                             <Fragment>
                               <button onClick={buyPair}>Buy</button>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { NavLink } from 'react-router-dom' 
@@ -28,10 +28,10 @@ const Header = () => {
                 { data.isLoggedIn
                   ? <Logout />
                   : (
-                    <Fragment>
+                    <>
                       <li><NavLink exact to="/login">Login</NavLink></li>
                       <li><NavLink exact to='/signup'>Sign Up</NavLink></li>
-                    </Fragment>
+                    </>
                   )
                 }
               </ul>

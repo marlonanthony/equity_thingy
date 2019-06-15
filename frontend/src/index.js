@@ -15,10 +15,7 @@ const cache = new InMemoryCache()
 
 const data = {
     isLoggedIn: !!localStorage.getItem('token'),
-    token: '',
-    currencyPairInfo: { 
-        __typename: "DefaultPairDisplay", 
-    }
+    token: localStorage.getItem('token') || ''
 }
 
 cache.writeData({ data })
