@@ -44,13 +44,13 @@ export default function Pair(props) {
           
     return (
         <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}>
-            {({ data, loading, error }) => {
+            {({ data, loading, error, refetch }) => {
                 if(loading) return <h1>Loading...</h1>
                 if(error) return `Error ${error}`
                 const { bidPrice, lastRefreshed } = data.currencyPairInfo,
                       pipDif = (bidPrice - purchasedAt).toFixed(4) 
                 
-                return (
+                return data && (
                     <div style={{ textAlign: 'center' }}>
                         <p>Lot size: { lotSize.toLocaleString() + '.00' }</p>
                         <p>Currency pair: { pair }</p>
@@ -60,6 +60,7 @@ export default function Pair(props) {
                         <p>Current bid price: { Number(bidPrice).toFixed(4) }</p>
                         <p>Current pip difference: { pipDif }</p>
                         <p>Potential profilt/loss: { Math.round(pipDif * lotSize) + '.00' }</p>
+                        <button onClick={() => refetch()}>Refetch</button>
                         <Mutation
                             mutation={SELL_PAIR}
                             variables={{ id, soldAt: +bidPrice }}>

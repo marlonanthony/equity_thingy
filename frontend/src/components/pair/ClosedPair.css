@@ -1,6 +1,14 @@
+.closed-pair-container {}
+
 .closed_pair {
     width: 300px;
     margin-left: calc(50% - 150px);
-}
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3), -3px -3px 3px 3px rgba(0,0,0,0.3);
+    padding: 10px;
+    padding-left: 50px;
 
+}
+.closed_pair p { padding: 5px; }
 .closed_pair p span { color: var(--secondary-color); }
+.closed_pair p:hover { color: gray; }
