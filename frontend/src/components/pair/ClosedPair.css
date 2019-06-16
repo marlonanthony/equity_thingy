@@ -10,5 +10,9 @@
 
 }
 .closed_pair p { padding: 5px; }
-.closed_pair p span { color: var(--secondary-color); }
-.closed_pair p:hover { color: gray; }
+
+.closed_pair p span,
+.closed-pair-container p span { color: var(--secondary-color); }
+
+.closed_pair p:hover,
+.closed-pair-container p:hover { color: gray; }

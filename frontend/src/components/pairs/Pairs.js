@@ -79,7 +79,7 @@ export default function Pairs() {
                                     <div className='my_currency_pairs_wrapper'>
                                         { data.user.currencyPairs.map(cPair => ( !cPair.open &&
                                             <div key={cPair.id} className='my_currency_pairs'>
-                                                <Link to={{ pathname: '/closedpair', state: { pair: cPair } }}>
+                                                <Link to={{ pathname: '/closedpair', state: { pair: cPair, bankroll: data.user.bankroll } }}>
                                                     <p><span>Currency Pair: </span>{cPair.pair && cPair.pair}</p>
                                                     <p><span>Lot Size: </span>{cPair.lotSize && cPair.lotSize.toLocaleString() + '.00' }</p>
                                                     <p><span>Purchased Price: </span>{cPair.purchasedAt && cPair.purchasedAt}</p>
