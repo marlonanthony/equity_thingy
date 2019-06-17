@@ -8,9 +8,9 @@ function Logout(props) {
             {client => (
                 <li onClick={() => {
                     client.writeData({ data: { isLoggedIn: false } })
-                    localStorage.clear() 
-                    client.clearStore().catch(err => console.log(err)) 
                     props.history.push('/')
+                    client.clearStore().catch(err => console.log(err)) 
+                    localStorage.clear() 
                 }}>
                     Logout
                 </li>
