@@ -1,0 +1,43 @@
+.pair_container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.pair_container p,
+.pair_container button {
+    margin: 0 10px;
+}
+.pair_container span {
+    color: var(--secondary-color);
+}
+.pair_container p:hover {
+    color: gray;
+}
+
+.pair {
+    text-align: start;
+    width: 300px;
+    margin: 20px;
+    margin-left: calc(50% - 150px);
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3), -3px -3px 3px 3px rgba(0,0,0,0.3);
+    padding: 10px;
+    padding-left: 50px;
+}
+.pair span {
+    color: var(--secondary-color);
+}
+.pair p:hover {
+    color: gray;
+}
+.pair button {
+    font-size: 14px;
+    margin-left: 27.5%;
+}
+
+/* .pair_sell_button {
+    text-align: center;
+} */
+.pair_sell_button button {
+    font-size: 14px;
+}
