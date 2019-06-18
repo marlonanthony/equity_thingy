@@ -43,7 +43,7 @@ export default function Pair(props) {
     const { lotSize, pair, purchasedAt, id } = props.location.state.pair,
           currency = pair.split('/')[0],
           toCurrency = pair.split('/')[1],
-          { bankroll } = props.location.state 
+          { bankroll } = props.location.state
           
     return (
         <Query query={CURRENCY_PAIR_INFO} variables={{ fc: currency, tc: toCurrency }}>
@@ -56,7 +56,7 @@ export default function Pair(props) {
                 return data && (
                     <div>
                         <div className='pair_container'>
-                            <p><span>Bankroll: </span>{bankroll}</p>
+                            <p><span>Bankroll: </span>{ bankroll.toLocaleString() + '.00' }</p>
                             <Mutation
                                 mutation={SELL_PAIR}
                                 variables={{ id, soldAt: +bidPrice }}>
@@ -75,8 +75,8 @@ export default function Pair(props) {
                             </Mutation>
                         </div>
                         <div className='pair'>
-                            <p><span>Lot size: </span>{ lotSize.toLocaleString() + '.00' }</p>
                             <p><span>Currency pair: </span>{ pair }</p>
+                            <p><span>Lot size: </span>{ lotSize.toLocaleString() + '.00' }</p>
                             <p><span>Purchased price: </span>{ purchasedAt }</p>
                         </div>
                         <div className='pair'>

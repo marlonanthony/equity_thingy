@@ -15,9 +15,13 @@ const resolvers = {
                 return result 
             } catch (err) { console.log(err) }
         },
-        user: async (_, { id }) => {
+        user: async (_, { id }, context) => {
             try {
+                const contextUser = context.user
                 const user = await User.findById(id).populate('currencyPairs')
+                // console.log(contextUser) 
+                // console.log(user) 
+                // if(contextUser) return { ...contextUser }
                 return user
             } catch (err) { console.log(err) }
         },

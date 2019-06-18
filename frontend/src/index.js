@@ -15,7 +15,8 @@ const cache = new InMemoryCache()
 
 const data = {
     isLoggedIn: !!localStorage.getItem('token'),
-    token: localStorage.getItem('token') || ''
+    token: localStorage.getItem('token') || '',
+    user: {__typename: 'User'}
 }
 
 cache.writeData({ data })

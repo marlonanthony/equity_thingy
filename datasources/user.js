@@ -87,7 +87,7 @@ class UserAPI extends DataSource {
       pair.profitLoss = pipDifFloat * pair.lotSize
       pair.open = false 
       const savedPair = await pair.save()
-      user.bankroll += savedPair.profitLoss
+      user.bankroll += (pair.lotSize + savedPair.profitLoss)
       await user.save()
 
       const success = true,
