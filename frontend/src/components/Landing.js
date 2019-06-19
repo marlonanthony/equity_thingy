@@ -119,12 +119,12 @@ const Landing = props => {
                             return <small style={{color: 'white'}}>Error: { error.message }</small>
                           }
                           return (buyPair && 
-                            <Fragment>
+                            <>
                               <button onClick={buyPair}>Buy</button>
                               {/* <div>
                                 <p>{data && data.buyPair.message}</p>
                               </div> */}
-                            </Fragment>
+                            </>
                           )
                         }}
                       </Mutation> }
