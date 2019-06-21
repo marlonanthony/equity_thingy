@@ -34,7 +34,7 @@ export default function Pairs() {
           [open, setOpen] = useState(true) 
     return (
         <div>
-            <Query query={GET_USER} variables={{ id: decodedToken && decodedToken.id}}> 
+            <Query query={GET_USER} fetchPolicy='network-only' variables={{ id: token && decodedToken && decodedToken.id}}> 
             {({ data, loading, error }) => {
                 if (loading) return <h1>Loading...</h1>
                 if(error) return `Error ${error}`

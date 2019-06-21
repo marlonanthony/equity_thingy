@@ -17,11 +17,15 @@ const resolvers = {
         },
         user: async (_, { id }, context) => {
             try {
-                const contextUser = context.user
+                // console.log(context.dataSources.userAPI.user)
+                // const contextUser = context.user
                 const user = await User.findById(id).populate('currencyPairs')
+                if(!user) return new Error('User not found')
+                // context.user = user 
                 // console.log(contextUser) 
                 // console.log(user) 
                 // if(contextUser) return { ...contextUser }
+                // console.log(context.user) 
                 return user
             } catch (err) { console.log(err) }
         },
@@ -47,6 +51,7 @@ const resolvers = {
         login: async (_, { email, password }, { dataSources }) => {
             try {
                 const loggedInUser = await dataSources.userAPI.loginUser({ email, password })
+                console.log(loggedInUser)
                 return loggedInUser
             } catch (err) { console.log(err) }
         },

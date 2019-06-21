@@ -103,11 +103,13 @@ const Landing = props => {
                         mutation={BUY_PAIR}
                         variables={{ pair: `${currency}/${toCurrency}`, lotSize: 100000, purchasedAt: askPrice }}
                         update={(cache , { data: { buyPair: { currencyPair } } }) => {
+                          console.log(decodedToken)
                           const { user } = cache.readQuery({ 
                             query: GET_USER,
                             variables: { id: decodedToken && decodedToken.id }
                           })
                           const data = user && user.currencyPairs.unshift(currencyPair)
+                          console.log(data && data)
                           cache.writeQuery({ query: GET_USER, data  })
                         }}
                         onCompleted={() => props.history.push('/pairs')}
@@ -121,9 +123,9 @@ const Landing = props => {
                           return (buyPair && 
                             <>
                               <button onClick={buyPair}>Buy</button>
-                              {/* <div>
+                              <div>
                                 <p>{data && data.buyPair.message}</p>
-                              </div> */}
+                              </div>
                             </>
                           )
                         }}

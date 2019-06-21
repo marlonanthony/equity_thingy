@@ -35,7 +35,6 @@ class UserAPI extends DataSource {
       })
       const res = await user.save()
       this.context.user = res 
-      console.log(this.context)
       return { id: res._id, name, email }
     } catch (err) { throw err }
   }
@@ -49,6 +48,8 @@ class UserAPI extends DataSource {
       const token = await jwt.sign({ id: user.id, email, name: user.name }, keys.secretOrKey, {
           expiresIn: '1h' 
       })
+      this.context.user = user 
+      // console.log(this.context)
       return { id: user.id, token, tokenExpiration: 1 }
     } 
     catch (err) { throw err }
